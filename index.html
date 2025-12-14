@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Slides v2 Skeleton</title>
+
+  <!-- Reveal.js (scroll view) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.2.1/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.2.1/dist/theme/white.css">
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.2.1/dist/reveal.js"></script>
+
+  <!-- Optional utility styling for quick layout -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link rel="stylesheet" href="./slides-runtime.css">
+</head>
+<body>
+  <!-- Slides v2 UI (overlay) -->
+  <div class="sv2-ui">
+    <button id="sv2CommentToggle" class="sv2-btn" type="button">
+      <span>Comments</span>
+      <span id="sv2CommentCount" class="sv2-badge">0</span>
+    </button>
+
+    <div class="sv2-status" title="Local comments (no server configured)">
+      <span id="sv2SyncDot" class="sv2-dot"></span>
+      <span id="sv2SyncStatus">Local</span>
+    </div>
+
+    <button id="sv2DownloadPdfBtn" class="sv2-btn sv2-btn-primary sv2-hidden" type="button">
+      Download PDF
+    </button>
+  </div>
+
+  <div id="sv2CommentMarkers"></div>
+  <div id="sv2InlineComments"></div>
+
+  <div id="sv2CommentPanel" class="sv2-panel" aria-hidden="true">
+    <div class="sv2-panel-header">
+      <div id="sv2PanelTitle" class="sv2-panel-title">Comment</div>
+      <button id="sv2ClosePanel" class="sv2-panel-close" type="button" aria-label="Close">&times;</button>
+    </div>
+    <div id="sv2PanelBody" class="sv2-panel-body"></div>
+  </div>
+
+  <div id="sv2NameModal" class="sv2-modal sv2-hidden" role="dialog" aria-modal="true" aria-label="Enter your name">
+    <div class="sv2-modal-content">
+      <h3 class="sv2-modal-title">Enter your name</h3>
+      <input id="sv2NameInput" class="sv2-input" type="text" placeholder="Your name..." />
+      <button id="sv2NameSubmit" class="sv2-btn sv2-btn-primary" type="button">Continue</button>
+    </div>
+  </div>
+
+  <!-- Reveal.js Container -->
+  <div class="reveal">
+    <div class="slides">
+      <!-- Note: use stable slide ids like `slide-<cuid>`; helper available as `SlidesV2.generateSlideId()` -->
+      <!-- Cover (excluded from numbering) -->
+      <section data-slide-kind="cover" class="bg-gradient-to-br from-slate-50 via-indigo-50 to-slate-100" style="min-height:100vh;">
+        <div class="sv2-slide-surface bg-white border border-slate-200 rounded-2xl shadow-2xl p-10 max-w-[900px]"
+             data-slide-id="slide-cxv2r1a8m3p7t9k2w5n6q0b4d"
+             data-slide-title="Cover">
+          <div class="flex items-center justify-between">
+            <h1 class="text-3xl font-bold text-slate-800">Slides v2 Skeleton</h1>
+            <div class="text-xs text-slate-500">
+              <span data-sv2-slide-index></span> / <span data-sv2-slide-total></span>
+            </div>
+          </div>
+          <p class="mt-4 text-slate-600">A minimal deck that uses a reusable runtime for navigation, numbering, PDF gating, and comments.</p>
+
+          <div class="mt-8 flex gap-3">
+            <button class="sv2-btn sv2-btn-primary" type="button" data-sv2-nav="next">Start</button>
+            <button class="sv2-btn" type="button" data-sv2-scroll-to="slide-cxv2h7j2k9m4p1x8w3n5v0q2r">Scroll to “Why”</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="bg-slate-50" style="min-height:100vh;">
+        <div class="sv2-slide-surface bg-white border border-slate-200 rounded-2xl shadow-xl p-10 max-w-[900px]"
+             data-slide-id="slide-cxv2h7j2k9m4p1x8w3n5v0q2r"
+             data-slide-title="Why Now">
+          <div class="flex items-center justify-between">
+            <h2 class="text-2xl font-bold text-slate-800">Why Now</h2>
+            <div class="text-xs text-slate-500">
+              <span data-sv2-slide-index></span> / <span data-sv2-slide-total></span>
+            </div>
+          </div>
+          <p class="mt-4 text-slate-600">Select text anywhere on a slide to create an anchored comment.</p>
+
+          <div class="mt-8 flex gap-3">
+            <button class="sv2-btn" type="button" data-sv2-nav="prev">Prev</button>
+            <button class="sv2-btn sv2-btn-primary" type="button" data-sv2-nav="next">Next</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="bg-slate-50" style="min-height:100vh;">
+        <div class="sv2-slide-surface bg-white border border-slate-200 rounded-2xl shadow-xl p-10 max-w-[900px]"
+             data-slide-id="slide-cxv2d5k8m2p4w7n3x9j6r1t0q"
+             data-slide-title="Demo">
+          <div class="flex items-center justify-between">
+            <h2 class="text-2xl font-bold text-slate-800">Demo</h2>
+            <div class="text-xs text-slate-500">
+              <span data-sv2-slide-index></span> / <span data-sv2-slide-total></span>
+            </div>
+          </div>
+          <p class="mt-4 text-slate-600">This slide has a canvas controller stub (click to play/pause).</p>
+          <canvas id="demoCanvas" width="820" height="240" class="sv2-canvas"></canvas>
+
+          <div class="mt-8 flex gap-3">
+            <button class="sv2-btn" type="button" data-sv2-nav="prev">Prev</button>
+            <button class="sv2-btn sv2-btn-primary" type="button" data-sv2-nav="next">Next</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="bg-slate-50" style="min-height:100vh;">
+        <div class="sv2-slide-surface bg-white border border-slate-200 rounded-2xl shadow-xl p-10 max-w-[900px]"
+             data-slide-id="slide-cxv2e3n7q1w9m2k5p8x4r6t0v"
+             data-slide-title="End">
+          <div class="flex items-center justify-between">
+            <h2 class="text-2xl font-bold text-slate-800">End</h2>
+            <div class="text-xs text-slate-500">
+              <span data-sv2-slide-index></span> / <span data-sv2-slide-total></span>
+            </div>
+          </div>
+          <p class="mt-4 text-slate-600">Reaching this slide unlocks PDF download.</p>
+
+          <div class="mt-8 flex gap-3">
+            <button class="sv2-btn" type="button" data-sv2-nav="prev">Prev</button>
+            <button class="sv2-btn" type="button" data-sv2-nav="first">Back to start</button>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script src="./slides-runtime.js"></script>
+  <script>
+    Reveal.initialize({
+      view: 'scroll',
+      scrollProgress: true,
+      scrollLayout: 'full',
+      scrollSnap: 'mandatory',
+      controls: false,
+      progress: false,
+      keyboard: true,
+      hash: true,
+      autoSlide: 0,
+      touch: true,
+      center: true,
+      transition: 'none',
+      slideNumber: false,
+      width: '100%',
+      height: '100%',
+      margin: 0,
+      minScale: 1,
+      maxScale: 1,
+      disableLayout: true
+    });
+
+    window.SlidesV2.init({
+      deckId: 'vibeSliding-skeleton',
+      selectors: {
+        slideSurface: '.sv2-slide-surface'
+      },
+      pdf: {
+        buttonId: 'sv2DownloadPdfBtn',
+        unlockKey: 'sv2DeckCompleted',
+        unlockOnLastSlide: true
+      },
+      comments: {
+        enabled: true,
+        storage: {
+          type: 'local'
+          // To use the Power Automate / SharePoint backend (like the PoC in `/slides`), configure:
+          // type: 'powerAutomate',
+          // requireBackend: true, // Disable commenting when backend unreachable
+          // apiKey: '<X-Api-Key value>',
+          // readUrl: '<READ_URL>',
+          // writeUrl: '<WRITE_URL>',
+          // updateUrl: '<UPDATE_URL>',
+          // deleteUrl: '<DELETE_URL>'
+        },
+        ui: {
+          toggleId: 'sv2CommentToggle',
+          countId: 'sv2CommentCount',
+          syncDotId: 'sv2SyncDot',
+          markersId: 'sv2CommentMarkers',
+          inlineId: 'sv2InlineComments',
+          panelId: 'sv2CommentPanel',
+          panelTitleId: 'sv2PanelTitle',
+          panelBodyId: 'sv2PanelBody',
+          closePanelId: 'sv2ClosePanel',
+          nameModalId: 'sv2NameModal',
+          nameInputId: 'sv2NameInput',
+          nameSubmitId: 'sv2NameSubmit',
+          syncStatusId: 'sv2SyncStatus'
+        }
+      },
+      canvas: {
+        controllers: [
+          {
+            canvasId: 'demoCanvas',
+            slideId: 'slide-cxv2d5k8m2p4w7n3x9j6r1t0q',
+            draw({ ctx, width, height, t, isPlaying }) {
+              ctx.clearRect(0, 0, width, height);
+              ctx.fillStyle = '#0f172a';
+              ctx.fillRect(0, 0, width, height);
+
+              ctx.fillStyle = '#ffffff';
+              ctx.font = '16px system-ui, -apple-system, Segoe UI, Roboto, Arial';
+              ctx.fillText(isPlaying ? 'Playing (click to pause)' : 'Paused (click to play)', 18, 32);
+
+              const x = 40 + (width - 80) * (0.5 + 0.45 * Math.sin(t / 600));
+              ctx.beginPath();
+              ctx.arc(x, height / 2 + 20 * Math.cos(t / 400), 18, 0, Math.PI * 2);
+              ctx.fillStyle = '#6366f1';
+              ctx.fill();
+            }
+          }
+        ]
+      }
+    });
+  </script>
+</body>
+</html>
