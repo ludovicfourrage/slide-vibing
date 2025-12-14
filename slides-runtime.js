@@ -1,6 +1,6 @@
 /* global Reveal */
 (function () {
-  // vibeSliding runtime (no-build)
+  // Slide-Vibing runtime (no-build)
   // --- Minimal reactive core (signals/memos/effects), no build required ---
   // Inspired by Solid's fine-grained reactivity; intentionally tiny.
   let _currentComputation = null;
@@ -597,7 +597,7 @@
     if (document.getElementById(DEFAULT_COMMENT_UI.toggleId)) return;
 
     const html = `
-      <!-- vibeSliding Comment UI (auto-injected) -->
+      <!-- Slide-Vibing Comment UI (auto-injected) -->
       <div class="sv2-ui">
         <button id="${DEFAULT_COMMENT_UI.toggleId}" class="sv2-btn sv2-btn-comments" type="button" title="Toggle comments">
           <span id="${DEFAULT_COMMENT_UI.syncDotId}" class="sv2-sync-dot"></span>

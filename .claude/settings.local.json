@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:docs.claude.com)",
+      "Bash(move:*)",
+      "Bash(move navigation.md technical )",
+      "Bash(move comments.md technical )",
+      "Bash(move pdf.md technical )",
+      "Bash(move canvas.md technical )",
+      "Bash(move api.md technical)",
+      "Bash(git mv:*)",
+      "Bash(cmd /c \"move /Y \"\"D:\\Gates Foundation\\slide-vibing\\docs\\slides.md\"\" \"\"D:\\Gates Foundation\\slide-vibing\\docs\\technical\"\"\")",
+      "Bash(cmd /c \"cd /d \"\"D:\\Gates Foundation\\slide-vibing\\docs\"\" && move slides.md technical\\ && move navigation.md technical\\ && move comments.md technical\\ && move pdf.md technical\\ && move canvas.md technical\\ && move api.md technical\"\")",
+      "Bash(cmd /c del \"D:\\Gates Foundation\\slide-vibing\\docs\\slides.md\" \"D:\\Gates Foundation\\slide-vibing\\docs\\navigation.md\" \"D:\\Gates Foundation\\slide-vibing\\docs\\comments.md\" \"D:\\Gates Foundation\\slide-vibing\\docs\\pdf.md\" \"D:\\Gates Foundation\\slide-vibing\\docs\\canvas.md\" \"D:\\Gates Foundation\\slide-vibing\\docs\\api.md\")",
+      "Bash(cmd /c \"del slides.md navigation.md comments.md pdf.md canvas.md api.md\")",
+      "Bash(powershell -Command:*)"
+    ]
+  }
+}

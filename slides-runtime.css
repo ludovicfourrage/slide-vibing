@@ -1,4 +1,4 @@
-/* vibeSliding runtime styles */
+/* Slide-Vibing runtime styles */
 :root {
   --sv2-indigo: #6366f1;
   --sv2-emerald: #10b981;
@@ -9,7 +9,7 @@
   --sv2-panel-header: #0f172a;
 }
 
-/* Reveal.js layout overrides for vibeSliding */
+/* Reveal.js layout overrides for Slide-Vibing */
 .reveal .slides {
   text-align: left;
 }
