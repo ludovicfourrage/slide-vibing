@@ -16,7 +16,7 @@ This is a static web project with no build step. To run locally:
 
 ### Core Files
 
-- **index.html** - Slide deck template using Reveal.js scroll view with `SlidesV2.init()` configuration
+- **index.html** - Slide deck template using Reveal.js scroll view with `SlideVibing.init()` configuration
 - **slides-runtime.js** - Self-contained runtime (~1900 lines) with reactive state system
 - **slides-runtime.css** - Styling for UI overlay, comment markers, panels, and modals
 
@@ -30,33 +30,33 @@ const derived = createMemo(() => computeFrom(value()));
 createEffect(() => reactTo(value()));
 ```
 
-Key subsystems initialized via `SlidesV2.init()`:
+Key subsystems initialized via `SlideVibing.init()`:
 
-1. **Navigation** (`initNav`) - Handles `data-sv2-nav` buttons (next/prev/first/last) and `data-sv2-scroll-to` links
-2. **Numbering** (`initNumbering`) - Populates `[data-sv2-slide-index]` and `[data-sv2-slide-total]` spans, excluding cover slides
+1. **Navigation** (`initNav`) - Handles `data-sv-nav` buttons (next/prev/first/last) and `data-sv-scroll-to` links
+2. **Numbering** (`initNumbering`) - Populates `[data-sv-slide-index]` and `[data-sv-slide-total]` spans, excluding cover slides
 3. **PDF Export** (`initPdf`) - Gated download button unlocked on reaching final slide, uses `?print-pdf` mode
 4. **Comments** (`initComments`) - Text selection creates anchored comments, supports local storage or Power Automate backend
 5. **Canvas Controllers** (`initCanvasControllers`) - Per-slide animated canvases with play/pause on click
 
 ### Slide Structure
 
-Slides are `<section>` elements containing a `.sv2-slide-surface` with:
-- `data-slide-id` - Stable CUID (use `SlidesV2.generateSlideId()`)
+Slides are `<section>` elements containing a `.sv-slide-surface` with:
+- `data-slide-id` - Stable CUID (use `SlideVibing.generateSlideId()`)
 - `data-slide-title` - Human-readable title
 - `data-slide-kind="cover"` - Excludes slide from numbering
 
 ### Comment Storage
 
 Comments can use:
-- **Local mode** (`storage: { type: 'local' }`) - localStorage with `sv2:comments:{deckId}` key
+- **Local mode** (`storage: { type: 'local' }`) - localStorage with `sv:comments:{deckId}` key
 - **Power Automate mode** - Requires `readUrl`, `writeUrl`, `updateUrl`, `deleteUrl`, and `apiKey`
 
 The system includes optimistic updates, conflict detection, and pending change tracking for offline resilience.
 
 ### Key Patterns
 
-- All UI elements use `sv2-` CSS class prefix
-- Element IDs follow `sv2{ComponentName}` pattern (e.g., `sv2CommentPanel`)
+- All UI elements use `sv-` CSS class prefix
+- Element IDs follow `sv{ComponentName}` pattern (e.g., `svCommentPanel`)
 - Comment markers are draggable and store position as percentage coordinates
 - Reveal.js configured with `view: 'scroll'`, `scrollSnap: 'mandatory'`, `disableLayout: true`
 

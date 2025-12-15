@@ -7,7 +7,7 @@ The comment system allows users to select text on slides and create anchored com
 ## Enabling Comments
 
 ```javascript
-SlidesV2.init({
+SlideVibing.init({
   deckId: 'my-deck',
   comments: {
     enabled: true,
@@ -33,7 +33,7 @@ comments: {
 }
 ```
 
-- Key format: `sv2:comments:{deckId}`
+- Key format: `sv:comments:{deckId}`
 - Persists across sessions
 - No server required
 - Per-browser/device only
@@ -69,19 +69,19 @@ comments: {
   enabled: true,
   storage: { type: 'local' },
   ui: {
-    toggleId: 'sv2CommentToggle',      // Toggle button
-    countId: 'sv2CommentCount',         // Comment count badge
-    syncDotId: 'sv2SyncDot',            // Sync status indicator
-    syncStatusId: 'sv2SyncStatus',      // Status text
-    markersId: 'sv2CommentMarkers',     // Markers container
-    inlineId: 'sv2InlineComments',      // Inline bubbles container
-    panelId: 'sv2CommentPanel',         // Comment panel
-    panelTitleId: 'sv2PanelTitle',      // Panel title
-    panelBodyId: 'sv2PanelBody',        // Panel body
-    closePanelId: 'sv2ClosePanel',      // Close button
-    nameModalId: 'sv2NameModal',        // Name prompt modal
-    nameInputId: 'sv2NameInput',        // Name input field
-    nameSubmitId: 'sv2NameSubmit'       // Name submit button
+    toggleId: 'svCommentToggle',      // Toggle button
+    countId: 'svCommentCount',         // Comment count badge
+    syncDotId: 'svSyncDot',            // Sync status indicator
+    syncStatusId: 'svSyncStatus',      // Status text
+    markersId: 'svCommentMarkers',     // Markers container
+    inlineId: 'svInlineComments',      // Inline bubbles container
+    panelId: 'svCommentPanel',         // Comment panel
+    panelTitleId: 'svPanelTitle',      // Panel title
+    panelBodyId: 'svPanelBody',        // Panel body
+    closePanelId: 'svClosePanel',      // Close button
+    nameModalId: 'svNameModal',        // Name prompt modal
+    nameInputId: 'svNameInput',        // Name input field
+    nameSubmitId: 'svNameSubmit'       // Name submit button
   }
 }
 ```
@@ -118,14 +118,14 @@ If comment UI elements aren't in your HTML, the runtime auto-injects them:
 
 ```html
 <!-- Auto-injected at document start -->
-<div class="sv2-ui">
-  <button id="sv2CommentToggle">Comments <span id="sv2CommentCount">0</span></button>
+<div class="sv-ui">
+  <button id="svCommentToggle">Comments <span id="svCommentCount">0</span></button>
 </div>
-<div id="sv2CommentMarkers"></div>
-<div id="sv2InlineComments"></div>
-<div id="sv2CommentPanel">...</div>
-<div id="sv2NameModal">...</div>
-<div id="sv2ConfirmModal">...</div>
+<div id="svCommentMarkers"></div>
+<div id="svInlineComments"></div>
+<div id="svCommentPanel">...</div>
+<div id="svNameModal">...</div>
+<div id="svConfirmModal">...</div>
 ```
 
 ## Comment Badge States

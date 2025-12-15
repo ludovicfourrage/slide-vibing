@@ -10,9 +10,9 @@ Canvas controllers provide per-slide animations that play/pause on click and res
 
 ```html
 <section>
-  <div class="sv2-slide-surface" data-slide-id="slide-demo" data-slide-title="Demo">
+  <div class="sv-slide-surface" data-slide-id="slide-demo" data-slide-title="Demo">
     <h2>Animated Demo</h2>
-    <canvas id="myCanvas" width="820" height="240" class="sv2-canvas"></canvas>
+    <canvas id="myCanvas" width="820" height="240" class="sv-canvas"></canvas>
   </div>
 </section>
 ```
@@ -20,7 +20,7 @@ Canvas controllers provide per-slide animations that play/pause on click and res
 ### 2. Register Controller
 
 ```javascript
-SlidesV2.init({
+SlideVibing.init({
   deckId: 'my-deck',
   canvas: {
     controllers: [
@@ -179,7 +179,7 @@ canvas: {
 ## Canvas Styling
 
 ```css
-.sv2-canvas {
+.sv-canvas {
   width: 100%;
   border-radius: 12px;
   margin-top: 16px;

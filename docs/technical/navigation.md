@@ -2,13 +2,13 @@
 
 ## Navigation Buttons
 
-Use `data-sv2-nav` attribute on buttons for navigation:
+Use `data-sv-nav` attribute on buttons for navigation:
 
 ```html
-<button class="sv2-btn" type="button" data-sv2-nav="prev">Previous</button>
-<button class="sv2-btn sv2-btn-primary" type="button" data-sv2-nav="next">Next</button>
-<button class="sv2-btn" type="button" data-sv2-nav="first">Back to Start</button>
-<button class="sv2-btn" type="button" data-sv2-nav="last">Go to End</button>
+<button class="sv-btn" type="button" data-sv-nav="prev">Previous</button>
+<button class="sv-btn sv-btn-primary" type="button" data-sv-nav="next">Next</button>
+<button class="sv-btn" type="button" data-sv-nav="first">Back to Start</button>
+<button class="sv-btn" type="button" data-sv-nav="last">Go to End</button>
 ```
 
 ### Available Actions
@@ -22,10 +22,10 @@ Use `data-sv2-nav` attribute on buttons for navigation:
 
 ## Jump Links
 
-Use `data-sv2-scroll-to` to jump to a specific slide by ID:
+Use `data-sv-scroll-to` to jump to a specific slide by ID:
 
 ```html
-<button class="sv2-btn" type="button" data-sv2-scroll-to="slide-abc123">
+<button class="sv-btn" type="button" data-sv-scroll-to="slide-abc123">
   Go to Specific Slide
 </button>
 ```
@@ -49,7 +49,7 @@ Access navigation via the runtime:
 
 ```javascript
 // Initialize and store reference
-const deck = window.SlidesV2.init({ ... });
+const deck = window.SlideVibing.init({ ... });
 
 // Navigate to slide by ID
 deck.scrollToId('slide-abc123');
@@ -74,8 +74,8 @@ Users can bookmark or share links to specific slides.
 
 ```html
 <div class="mt-8 flex gap-3">
-  <button class="sv2-btn" type="button" data-sv2-nav="prev">Prev</button>
-  <button class="sv2-btn sv2-btn-primary" type="button" data-sv2-nav="next">Next</button>
+  <button class="sv-btn" type="button" data-sv-nav="prev">Prev</button>
+  <button class="sv-btn sv-btn-primary" type="button" data-sv-nav="next">Next</button>
 </div>
 ```
 
@@ -83,8 +83,8 @@ Users can bookmark or share links to specific slides.
 
 ```html
 <div class="mt-8 flex gap-3">
-  <button class="sv2-btn sv2-btn-primary" type="button" data-sv2-nav="next">Start</button>
-  <button class="sv2-btn" type="button" data-sv2-scroll-to="slide-conclusion">Skip to End</button>
+  <button class="sv-btn sv-btn-primary" type="button" data-sv-nav="next">Start</button>
+  <button class="sv-btn" type="button" data-sv-scroll-to="slide-conclusion">Skip to End</button>
 </div>
 ```
 
@@ -92,8 +92,8 @@ Users can bookmark or share links to specific slides.
 
 ```html
 <div class="mt-8 flex gap-3">
-  <button class="sv2-btn" type="button" data-sv2-nav="prev">Prev</button>
-  <button class="sv2-btn" type="button" data-sv2-nav="first">Back to Start</button>
+  <button class="sv-btn" type="button" data-sv-nav="prev">Prev</button>
+  <button class="sv-btn" type="button" data-sv-nav="first">Back to Start</button>
 </div>
 ```
 
@@ -101,8 +101,8 @@ Users can bookmark or share links to specific slides.
 
 ```html
 <ul class="space-y-2">
-  <li><button class="sv2-btn" data-sv2-scroll-to="slide-intro">Introduction</button></li>
-  <li><button class="sv2-btn" data-sv2-scroll-to="slide-analysis">Analysis</button></li>
-  <li><button class="sv2-btn" data-sv2-scroll-to="slide-conclusion">Conclusion</button></li>
+  <li><button class="sv-btn" data-sv-scroll-to="slide-intro">Introduction</button></li>
+  <li><button class="sv-btn" data-sv-scroll-to="slide-analysis">Analysis</button></li>
+  <li><button class="sv-btn" data-sv-scroll-to="slide-conclusion">Conclusion</button></li>
 </ul>
 ```

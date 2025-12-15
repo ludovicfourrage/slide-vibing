@@ -330,10 +330,21 @@
   function initNav({ surfaces }) {
     const byId = new Map(surfaces.map((s) => [s.id, s]));
 
+    function isScrollView() {
+      if (!hasReveal() || typeof Reveal.getConfig !== 'function') return false;
+      const config = Reveal.getConfig();
+      return config.view === 'scroll';
+    }
+
     function scrollToId(id) {
       const surface = byId.get(id);
       if (!surface) return;
-      // Use Reveal.js slide() if available
+      // In scroll view mode, use native scroll (Reveal.slide() doesn't scroll properly)
+      if (isScrollView()) {
+        surface.el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        return;
+      }
+      // Use Reveal.js slide() for traditional view
       if (hasReveal() && typeof Reveal.slide === 'function') {
         const idx = surfaces.findIndex((s) => s.id === id);
         if (idx >= 0) {
@@ -359,45 +370,49 @@
 
     function scrollToIndex(i) {
       const idx = clamp(i, 0, surfaces.length - 1);
-      // Use Reveal.js slide() if available
+      const surface = surfaces[idx];
+      if (!surface) return;
+      // In scroll view mode, use native scroll (Reveal.slide() doesn't scroll properly)
+      if (isScrollView()) {
+        surface.el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        return;
+      }
+      // Use Reveal.js slide() for traditional view
       if (hasReveal() && typeof Reveal.slide === 'function') {
         Reveal.slide(idx);
         return;
       }
       // Fallback to native scroll
-      const surface = surfaces[idx];
-      if (!surface) return;
       surface.el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
     document.addEventListener('click', (e) => {
-      const target = e.target.closest('[data-sv2-nav],[data-sv2-scroll-to]');
+      const target = e.target.closest('[data-sv-nav],[data-sv-scroll-to]');
       if (!target) return;
 
-      if (target.hasAttribute('data-sv2-scroll-to')) {
+      if (target.hasAttribute('data-sv-scroll-to')) {
         e.preventDefault();
-        scrollToId(target.getAttribute('data-sv2-scroll-to'));
+        scrollToId(target.getAttribute('data-sv-scroll-to'));
         return;
       }
 
-      const action = target.getAttribute('data-sv2-nav');
+      const action = target.getAttribute('data-sv-nav');
       if (!action) return;
       e.preventDefault();
 
-      // Use Reveal.js navigation methods when available
+      // Use Reveal.js navigation methods when available (next/prev work in scroll view)
       if (hasReveal()) {
         if (action === 'next' && typeof Reveal.next === 'function') { Reveal.next(); return; }
         if (action === 'prev' && typeof Reveal.prev === 'function') { Reveal.prev(); return; }
-        if (action === 'first' && typeof Reveal.slide === 'function') { Reveal.slide(0); return; }
-        if (action === 'last' && typeof Reveal.slide === 'function') { Reveal.slide(surfaces.length - 1); return; }
       }
+      // Use scrollToIndex for first/last (handles scroll view properly via native scroll)
+      if (action === 'first') { scrollToIndex(0); return; }
+      if (action === 'last') { scrollToIndex(surfaces.length - 1); return; }
 
       // Fallback to index-based navigation
       const idx = currentIndex();
       if (action === 'next') scrollToIndex(idx + 1);
       if (action === 'prev') scrollToIndex(idx - 1);
-      if (action === 'first') scrollToIndex(0);
-      if (action === 'last') scrollToIndex(surfaces.length - 1);
     });
 
     return { scrollToId, currentIndex };
@@ -411,8 +426,8 @@
 
     function updateSurface(surface) {
       const isCover = surface.el.closest('section')?.getAttribute('data-slide-kind') === 'cover';
-      const indexEl = surface.el.querySelector('[data-sv2-slide-index]');
-      const totalEl = surface.el.querySelector('[data-sv2-slide-total]');
+      const indexEl = surface.el.querySelector('[data-sv-slide-index]');
+      const totalEl = surface.el.querySelector('[data-sv-slide-total]');
 
       if (isCover) {
         if (indexEl) indexEl.textContent = '';
@@ -439,8 +454,8 @@
     if (!button) return { updateUnlock: () => {} };
 
     // If custom unlockKey provided, use it as-is; otherwise namespace with deckId
-    const unlockKey = pdf.unlockKey || `sv2DeckCompleted:${deckId}`;
-    if (localStorage.getItem(unlockKey) === 'true') button.classList.remove('sv2-hidden');
+    const unlockKey = pdf.unlockKey || `svDeckCompleted:${deckId}`;
+    if (localStorage.getItem(unlockKey) === 'true') button.classList.remove('sv-hidden');
 
     function openPrint() {
       const url = new URL(window.location.href);
@@ -484,7 +499,7 @@
 
       if (isAtEnd) {
         localStorage.setItem(unlockKey, 'true');
-        button.classList.remove('sv2-hidden');
+        button.classList.remove('sv-hidden');
       }
     }
 
@@ -571,24 +586,24 @@
 
   // Default UI element IDs for comment system
   const DEFAULT_COMMENT_UI = {
-    toggleId: 'sv2CommentToggle',
-    countId: 'sv2CommentCount',
-    syncDotId: 'sv2SyncDot',
-    syncStatusId: 'sv2SyncStatus',
-    markersId: 'sv2CommentMarkers',
-    inlineId: 'sv2InlineComments',
-    panelId: 'sv2CommentPanel',
-    panelTitleId: 'sv2PanelTitle',
-    panelBodyId: 'sv2PanelBody',
-    closePanelId: 'sv2ClosePanel',
-    nameModalId: 'sv2NameModal',
-    nameInputId: 'sv2NameInput',
-    nameSubmitId: 'sv2NameSubmit',
-    confirmModalId: 'sv2ConfirmModal',
-    confirmTitleId: 'sv2ConfirmTitle',
-    confirmMessageId: 'sv2ConfirmMessage',
-    confirmDeleteId: 'sv2ConfirmDelete',
-    confirmCancelId: 'sv2ConfirmCancel'
+    toggleId: 'svCommentToggle',
+    countId: 'svCommentCount',
+    syncDotId: 'svSyncDot',
+    syncStatusId: 'svSyncStatus',
+    markersId: 'svCommentMarkers',
+    inlineId: 'svInlineComments',
+    panelId: 'svCommentPanel',
+    panelTitleId: 'svPanelTitle',
+    panelBodyId: 'svPanelBody',
+    closePanelId: 'svClosePanel',
+    nameModalId: 'svNameModal',
+    nameInputId: 'svNameInput',
+    nameSubmitId: 'svNameSubmit',
+    confirmModalId: 'svConfirmModal',
+    confirmTitleId: 'svConfirmTitle',
+    confirmMessageId: 'svConfirmMessage',
+    confirmDeleteId: 'svConfirmDelete',
+    confirmCancelId: 'svConfirmCancel'
   };
 
   // Inject comment UI HTML if not present in document
@@ -598,47 +613,47 @@
 
     const html = `
       <!-- Slide-Vibing Comment UI (auto-injected) -->
-      <div class="sv2-ui">
-        <button id="${DEFAULT_COMMENT_UI.toggleId}" class="sv2-btn sv2-btn-comments" type="button" title="Toggle comments">
-          <span id="${DEFAULT_COMMENT_UI.syncDotId}" class="sv2-sync-dot"></span>
+      <div class="sv-ui">
+        <button id="${DEFAULT_COMMENT_UI.toggleId}" class="sv-btn sv-btn-comments" type="button" title="Toggle comments">
+          <span id="${DEFAULT_COMMENT_UI.syncDotId}" class="sv-sync-dot"></span>
           <span>Comments</span>
-          <span id="${DEFAULT_COMMENT_UI.countId}" class="sv2-badge">0</span>
+          <span id="${DEFAULT_COMMENT_UI.countId}" class="sv-badge">0</span>
         </button>
-        <span id="${DEFAULT_COMMENT_UI.syncStatusId}" class="sv2-hidden"></span>
+        <span id="${DEFAULT_COMMENT_UI.syncStatusId}" class="sv-hidden"></span>
       </div>
 
       <div id="${DEFAULT_COMMENT_UI.markersId}"></div>
       <div id="${DEFAULT_COMMENT_UI.inlineId}"></div>
 
-      <div id="${DEFAULT_COMMENT_UI.panelId}" class="sv2-panel" aria-hidden="true">
-        <div class="sv2-panel-header">
-          <div id="${DEFAULT_COMMENT_UI.panelTitleId}" class="sv2-panel-title">Comment</div>
-          <button id="${DEFAULT_COMMENT_UI.closePanelId}" class="sv2-panel-close" type="button" aria-label="Close">&times;</button>
+      <div id="${DEFAULT_COMMENT_UI.panelId}" class="sv-panel" aria-hidden="true">
+        <div class="sv-panel-header">
+          <div id="${DEFAULT_COMMENT_UI.panelTitleId}" class="sv-panel-title">Comment</div>
+          <button id="${DEFAULT_COMMENT_UI.closePanelId}" class="sv-panel-close" type="button" aria-label="Close">&times;</button>
         </div>
-        <div id="${DEFAULT_COMMENT_UI.panelBodyId}" class="sv2-panel-body"></div>
+        <div id="${DEFAULT_COMMENT_UI.panelBodyId}" class="sv-panel-body"></div>
       </div>
 
-      <div id="${DEFAULT_COMMENT_UI.nameModalId}" class="sv2-modal sv2-hidden" role="dialog" aria-modal="true" aria-label="Enter your name">
-        <div class="sv2-modal-content">
-          <div class="sv2-modal-header">
-            <h3 class="sv2-modal-title">Enter your name</h3>
-            <button id="sv2NameClose" class="sv2-modal-close" type="button" aria-label="Close">&times;</button>
+      <div id="${DEFAULT_COMMENT_UI.nameModalId}" class="sv-modal sv-hidden" role="dialog" aria-modal="true" aria-label="Enter your name">
+        <div class="sv-modal-content">
+          <div class="sv-modal-header">
+            <h3 class="sv-modal-title">Enter your name</h3>
+            <button id="svNameClose" class="sv-modal-close" type="button" aria-label="Close">&times;</button>
           </div>
-          <input id="${DEFAULT_COMMENT_UI.nameInputId}" class="sv2-input" type="text" placeholder="Your name..." />
-          <button id="${DEFAULT_COMMENT_UI.nameSubmitId}" class="sv2-btn sv2-btn-primary" type="button">Continue</button>
+          <input id="${DEFAULT_COMMENT_UI.nameInputId}" class="sv-input" type="text" placeholder="Your name..." />
+          <button id="${DEFAULT_COMMENT_UI.nameSubmitId}" class="sv-btn sv-btn-primary" type="button">Continue</button>
         </div>
       </div>
 
-      <div id="${DEFAULT_COMMENT_UI.confirmModalId}" class="sv2-modal sv2-hidden" role="dialog" aria-modal="true" aria-label="Confirm action">
-        <div class="sv2-modal-content">
-          <div class="sv2-modal-header">
-            <h3 class="sv2-modal-title" id="${DEFAULT_COMMENT_UI.confirmTitleId}">Delete comment?</h3>
-            <button class="sv2-modal-close" id="sv2ConfirmClose" type="button" aria-label="Close">&times;</button>
+      <div id="${DEFAULT_COMMENT_UI.confirmModalId}" class="sv-modal sv-hidden" role="dialog" aria-modal="true" aria-label="Confirm action">
+        <div class="sv-modal-content">
+          <div class="sv-modal-header">
+            <h3 class="sv-modal-title" id="${DEFAULT_COMMENT_UI.confirmTitleId}">Delete comment?</h3>
+            <button class="sv-modal-close" id="svConfirmClose" type="button" aria-label="Close">&times;</button>
           </div>
-          <p id="${DEFAULT_COMMENT_UI.confirmMessageId}" class="sv2-confirm-message">This will delete the comment and all its replies. This action cannot be undone.</p>
-          <div class="sv2-confirm-actions">
-            <button id="${DEFAULT_COMMENT_UI.confirmCancelId}" class="sv2-btn sv2-btn-secondary" type="button">Cancel</button>
-            <button id="${DEFAULT_COMMENT_UI.confirmDeleteId}" class="sv2-btn sv2-btn-danger" type="button">Delete</button>
+          <p id="${DEFAULT_COMMENT_UI.confirmMessageId}" class="sv-confirm-message">This will delete the comment and all its replies. This action cannot be undone.</p>
+          <div class="sv-confirm-actions">
+            <button id="${DEFAULT_COMMENT_UI.confirmCancelId}" class="sv-btn sv-btn-secondary" type="button">Cancel</button>
+            <button id="${DEFAULT_COMMENT_UI.confirmDeleteId}" class="sv-btn sv-btn-danger" type="button">Delete</button>
           </div>
         </div>
       </div>
@@ -670,7 +685,7 @@
     const nameModalEl = document.getElementById(ui.nameModalId);
     const nameInputEl = document.getElementById(ui.nameInputId);
     const nameSubmitEl = document.getElementById(ui.nameSubmitId);
-    const nameCloseEl = nameModalEl?.querySelector('.sv2-modal-close');
+    const nameCloseEl = nameModalEl?.querySelector('.sv-modal-close');
     const syncStatusEl = document.getElementById(ui.syncStatusId);
 
     // Confirm modal elements
@@ -679,13 +694,13 @@
     const confirmMessageEl = document.getElementById(ui.confirmMessageId);
     const confirmDeleteEl = document.getElementById(ui.confirmDeleteId);
     const confirmCancelEl = document.getElementById(ui.confirmCancelId);
-    const confirmCloseEl = confirmModalEl?.querySelector('.sv2-modal-close');
+    const confirmCloseEl = confirmModalEl?.querySelector('.sv-modal-close');
 
     if (!toggleBtn || !countEl || !markersEl || !inlineEl || !panelEl || !panelTitleEl || !panelBodyEl || !closePanelEl) {
       return noopReturn;
     }
 
-    const storeKey = `sv2:comments:${deckId}`;
+    const storeKey = `sv:comments:${deckId}`;
     const cacheStore = createLocalCommentsStore(storeKey);
 
     const storageCfg = commentsConfig.storage || { type: 'local' };
@@ -713,7 +728,7 @@
     const [hydrated, setHydrated] = createSignal(false);
     const [activeSurfaceId, setActiveSurfaceId] = createSignal(surfaces[0]?.id || '');
 
-    const [currentUser, setCurrentUser] = createSignal(localStorage.getItem('sv2CommentUser') || '');
+    const [currentUser, setCurrentUser] = createSignal(localStorage.getItem('svCommentUser') || '');
     const [inlineVisible, setInlineVisible] = createSignal(false);
     const [focusedInlineId, setFocusedInlineId] = createSignal(null);
     const [panelState, setPanelState] = createSignal(null); // null | {mode:'new',...} | {mode:'thread', id}
@@ -739,7 +754,7 @@
     }
 
     function setPanelActive(active) {
-      panelEl.classList.toggle('sv2-active', active);
+      panelEl.classList.toggle('sv-active', active);
       panelEl.setAttribute('aria-hidden', active ? 'false' : 'true');
     }
 
@@ -777,10 +792,10 @@
 
     function setSyncUI({ dot, text, title } = {}) {
       if (syncDotEl) {
-        syncDotEl.classList.remove('sv2-syncing', 'sv2-error', 'sv2-offline');
-        if (dot === 'syncing') syncDotEl.classList.add('sv2-syncing');
-        else if (dot === 'error') syncDotEl.classList.add('sv2-error');
-        else if (dot === 'offline') syncDotEl.classList.add('sv2-offline');
+        syncDotEl.classList.remove('sv-syncing', 'sv-error', 'sv-offline');
+        if (dot === 'syncing') syncDotEl.classList.add('sv-syncing');
+        else if (dot === 'error') syncDotEl.classList.add('sv-error');
+        else if (dot === 'offline') syncDotEl.classList.add('sv-offline');
       }
       // Update button title for status tooltip
       if (toggleBtn && typeof text === 'string') {
@@ -794,7 +809,7 @@
 
       const exportBtn = document.createElement('button');
       exportBtn.textContent = 'Export';
-      exportBtn.className = 'sv2-btn sv2-btn-success';
+      exportBtn.className = 'sv-btn sv-btn-success';
       exportBtn.onclick = () => {
         const data = JSON.stringify(comments(), null, 2);
         navigator.clipboard.writeText(data).then(() => {
@@ -805,7 +820,7 @@
 
       const importBtn = document.createElement('button');
       importBtn.textContent = 'Import';
-      importBtn.className = 'sv2-btn sv2-btn-primary';
+      importBtn.className = 'sv-btn sv-btn-primary';
       importBtn.onclick = async () => {
         try {
           const text = await navigator.clipboard.readText();
@@ -1043,9 +1058,9 @@
         const roots = rootCommentsForSurface(surfaceId);
         roots.forEach((c, index) => {
         const marker = document.createElement('div');
-        marker.className = 'sv2-marker';
-        if (c.resolved) marker.classList.add('sv2-marker-resolved');
-        if (repliesFor(c.id).length) marker.classList.add('sv2-marker-has-replies');
+        marker.className = 'sv-marker';
+        if (c.resolved) marker.classList.add('sv-marker-resolved');
+        if (repliesFor(c.id).length) marker.classList.add('sv-marker-has-replies');
 
         marker.textContent = String(index + 1);
         marker.style.left = `${rect.left + (c.x / 100) * rect.width}px`;
@@ -1055,7 +1070,7 @@
         marker.addEventListener('mousedown', (e) => {
           if (e.button !== 0) return;
           dragState = { commentId: c.id, hasMoved: false };
-          marker.classList.add('sv2-marker-dragging');
+          marker.classList.add('sv-marker-dragging');
           e.preventDefault();
         });
 
@@ -1080,21 +1095,21 @@
       const roots = rootCommentsForSurface(surfaceId);
       roots.forEach((c, index) => {
         const el = document.createElement('div');
-        el.className = 'sv2-inline';
-        if (c.resolved) el.classList.add('sv2-inline-resolved');
-        if (focusedInlineId() === c.id) el.classList.add('sv2-inline-focused');
+        el.className = 'sv-inline';
+        if (c.resolved) el.classList.add('sv-inline-resolved');
+        if (focusedInlineId() === c.id) el.classList.add('sv-inline-focused');
         el.style.left = `${rect.left + (c.x / 100) * rect.width + 14}px`;
         el.style.top = `${rect.top + (c.y / 100) * rect.height}px`;
         el.style.zIndex = focusedInlineId() === c.id ? '900' : String(650 + index);
         const replyCount = repliesFor(c.id).length;
 
         el.innerHTML = `
-          <div class="sv2-inline-header">
+          <div class="sv-inline-header">
             <div>${escapeHtml(c.author || 'Unknown')}</div>
-            <div class="sv2-inline-meta">${escapeHtml(timeAgo(c.createdAt))}</div>
+            <div class="sv-inline-meta">${escapeHtml(timeAgo(c.createdAt))}</div>
           </div>
-          <div class="sv2-inline-text">${escapeHtml(c.text)}</div>
-          ${replyCount ? `<div class="sv2-inline-replies">${replyCount} ${replyCount === 1 ? 'reply' : 'replies'}</div>` : ''}
+          <div class="sv-inline-text">${escapeHtml(c.text)}</div>
+          ${replyCount ? `<div class="sv-inline-replies">${replyCount} ${replyCount === 1 ? 'reply' : 'replies'}</div>` : ''}
         `;
 
         el.addEventListener('click', (e) => {
@@ -1109,23 +1124,23 @@
     function renderNewCommentPanel({ slideId, x, y, quotedText }) {
       panelTitleEl.textContent = 'New Comment';
       panelBodyEl.innerHTML = `
-        ${quotedText ? `<div class="sv2-comment sv2-comment-reply"><div class="sv2-text">"${escapeHtml(quotedText)}"</div></div>` : ''}
-        <textarea id="sv2NewCommentInput" class="sv2-input" rows="4" placeholder="Write your comment..."></textarea>
-        <div class="sv2-actions">
-          <button id="sv2CreateCommentBtn" class="sv2-btn sv2-btn-primary" type="button">Add Comment</button>
-          <button id="sv2CancelCommentBtn" class="sv2-btn sv2-btn-secondary" type="button">Cancel</button>
+        ${quotedText ? `<div class="sv-comment sv-comment-reply"><div class="sv-text">"${escapeHtml(quotedText)}"</div></div>` : ''}
+        <textarea id="svNewCommentInput" class="sv-input" rows="4" placeholder="Write your comment..."></textarea>
+        <div class="sv-actions">
+          <button id="svCreateCommentBtn" class="sv-btn sv-btn-primary" type="button">Add Comment</button>
+          <button id="svCancelCommentBtn" class="sv-btn sv-btn-secondary" type="button">Cancel</button>
         </div>
       `;
       setPanelActive(true);
 
-      document.getElementById('sv2CancelCommentBtn')?.addEventListener('click', (e) => {
+      document.getElementById('svCancelCommentBtn')?.addEventListener('click', (e) => {
         e.stopPropagation();
         window.getSelection()?.removeAllRanges();
         setPanelState(null);
       });
-      document.getElementById('sv2CreateCommentBtn')?.addEventListener('click', () => {
+      document.getElementById('svCreateCommentBtn')?.addEventListener('click', () => {
         if (!ensureWritableOrWarn()) return;
-        const input = document.getElementById('sv2NewCommentInput');
+        const input = document.getElementById('svNewCommentInput');
         const text = input?.value.trim() || '';
         if (!text) return;
         const now = new Date().toISOString();
@@ -1185,7 +1200,7 @@
       panelTitleEl.textContent = `Comment #${idx + 1} • ${slideLabel}${isResolved ? ' ✓' : ''}`;
 
       // Apply resolved styling to panel
-      panelEl.classList.toggle('sv2-panel-resolved', isResolved);
+      panelEl.classList.toggle('sv-panel-resolved', isResolved);
 
       const replies = repliesFor(commentId);
       let html = '';
@@ -1193,23 +1208,23 @@
       for (const r of replies) html += renderCommentBlock(r, true, isResolved);
 
       html += `
-        <textarea id="sv2ReplyInput" class="sv2-input" rows="2" placeholder="Write a reply..."></textarea>
-        <div class="sv2-actions">
-          <button id="sv2ReplyBtn" class="sv2-btn sv2-btn-primary" type="button">Reply</button>
-          ${isResolved ? '' : '<button id="sv2ResolveBtn" class="sv2-btn sv2-btn-success" type="button">Resolve</button>'}
-          <button id="sv2DeleteBtn" class="sv2-btn sv2-btn-danger" type="button">Delete</button>
+        <textarea id="svReplyInput" class="sv-input" rows="2" placeholder="Write a reply..."></textarea>
+        <div class="sv-actions">
+          <button id="svReplyBtn" class="sv-btn sv-btn-primary" type="button">Reply</button>
+          ${isResolved ? '' : '<button id="svResolveBtn" class="sv-btn sv-btn-success" type="button">Resolve</button>'}
+          <button id="svDeleteBtn" class="sv-btn sv-btn-danger" type="button">Delete</button>
         </div>
       `;
 
       panelBodyEl.innerHTML = html;
       setPanelActive(true);
 
-      panelBodyEl.querySelectorAll('[data-sv2-edit]').forEach((btn) => {
-        btn.addEventListener('click', () => showEditInline(btn.getAttribute('data-sv2-edit')));
+      panelBodyEl.querySelectorAll('[data-sv-edit]').forEach((btn) => {
+        btn.addEventListener('click', () => showEditInline(btn.getAttribute('data-sv-edit')));
       });
 
-      document.getElementById('sv2ReplyBtn')?.addEventListener('click', () => {
-        const input = document.getElementById('sv2ReplyInput');
+      document.getElementById('svReplyBtn')?.addEventListener('click', () => {
+        const input = document.getElementById('svReplyInput');
         const text = input?.value.trim() || '';
         if (!text) return;
         if (!ensureWritableOrWarn()) return;
@@ -1238,7 +1253,7 @@
         setPanelState({ mode: 'thread', id: commentId });
       });
 
-      document.getElementById('sv2ResolveBtn')?.addEventListener('click', () => {
+      document.getElementById('svResolveBtn')?.addEventListener('click', () => {
         if (!ensureWritableOrWarn()) return;
         const root = comments().find((x) => x.id === commentId);
         if (!root) return;
@@ -1266,7 +1281,7 @@
         }
       });
 
-      document.getElementById('sv2DeleteBtn')?.addEventListener('click', () => {
+      document.getElementById('svDeleteBtn')?.addEventListener('click', () => {
         if (!ensureWritableOrWarn()) return;
         skipPollUntil = Date.now() + 5000;
         const replyIds = comments().filter((x) => x.parentId === commentId).map((x) => x.id);
@@ -1287,24 +1302,24 @@
 
     function showNameModal() {
       if (!nameModalEl || !nameInputEl) return;
-      nameModalEl.classList.remove('sv2-hidden');
+      nameModalEl.classList.remove('sv-hidden');
       nameInputEl.value = currentUser() || '';
       nameInputEl.focus();
     }
 
     function hideNameModal() {
-      nameModalEl?.classList.add('sv2-hidden');
+      nameModalEl?.classList.add('sv-hidden');
     }
 
     function showConfirmModal(title, message) {
       if (!confirmModalEl) return;
       if (confirmTitleEl) confirmTitleEl.textContent = title || 'Confirm';
       if (confirmMessageEl) confirmMessageEl.textContent = message || 'Are you sure?';
-      confirmModalEl.classList.remove('sv2-hidden');
+      confirmModalEl.classList.remove('sv-hidden');
     }
 
     function hideConfirmModal() {
-      confirmModalEl?.classList.add('sv2-hidden');
+      confirmModalEl?.classList.add('sv-hidden');
       setPendingDelete(null);
     }
 
@@ -1340,7 +1355,7 @@
         setCurrentUser(name);
         setNameModalOpen(false);
       });
-      localStorage.setItem('sv2CommentUser', name);
+      localStorage.setItem('svCommentUser', name);
 
       const a = pendingAction();
       if (a) {
@@ -1354,14 +1369,14 @@
       const author = escapeHtml(comment.author || 'Unknown');
       const when = escapeHtml(timeAgo(comment.createdAt));
       const text = escapeHtml(comment.text || '');
-      const resolvedClass = isResolved ? 'sv2-comment-resolved' : '';
+      const resolvedClass = isResolved ? 'sv-comment-resolved' : '';
       return `
-        <div class="sv2-comment ${isReply ? 'sv2-comment-reply' : ''} ${resolvedClass}">
-          <div class="sv2-comment-top">
-            <div><span class="sv2-author">${author}</span> <span class="sv2-time">${when}</span></div>
-            <button class="sv2-btn sv2-btn-secondary" type="button" data-sv2-edit="${escapeHtml(comment.id)}">Edit</button>
+        <div class="sv-comment ${isReply ? 'sv-comment-reply' : ''} ${resolvedClass}">
+          <div class="sv-comment-top">
+            <div><span class="sv-author">${author}</span> <span class="sv-time">${when}</span></div>
+            <button class="sv-btn sv-btn-secondary" type="button" data-sv-edit="${escapeHtml(comment.id)}">Edit</button>
           </div>
-          <div class="sv2-text" data-sv2-text-for="${escapeHtml(comment.id)}">${text}</div>
+          <div class="sv-text" data-sv-text-for="${escapeHtml(comment.id)}">${text}</div>
         </div>
       `;
     }
@@ -1369,26 +1384,26 @@
     function showEditInline(commentId) {
       const c = comments().find((x) => x.id === commentId);
       if (!c) return;
-      const selector = `[data-sv2-text-for="${CSS.escape(commentId)}"]`;
+      const selector = `[data-sv-text-for="${CSS.escape(commentId)}"]`;
       const textEl = panelBodyEl.querySelector(selector);
       if (!textEl) return;
 
       const textarea = document.createElement('textarea');
-      textarea.className = 'sv2-input';
+      textarea.className = 'sv-input';
       textarea.rows = 3;
       textarea.value = c.text || '';
       textEl.replaceWith(textarea);
 
       const wrap = document.createElement('div');
-      wrap.className = 'sv2-actions';
+      wrap.className = 'sv-actions';
 
       const saveBtn = document.createElement('button');
-      saveBtn.className = 'sv2-btn sv2-btn-primary';
+      saveBtn.className = 'sv-btn sv-btn-primary';
       saveBtn.type = 'button';
       saveBtn.textContent = 'Save edit';
 
       const cancelBtn = document.createElement('button');
-      cancelBtn.className = 'sv2-btn sv2-btn-secondary';
+      cancelBtn.className = 'sv-btn sv-btn-secondary';
       cancelBtn.type = 'button';
       cancelBtn.textContent = 'Cancel';
 
@@ -1538,9 +1553,9 @@
       const range = selection.getRangeAt(0);
       const container = range.commonAncestorContainer.nodeType === 1 ? range.commonAncestorContainer : range.commonAncestorContainer.parentElement;
       if (!container) return;
-      if (container.closest?.('.sv2-panel') || container.closest?.('.sv2-ui') || container.closest?.('.sv2-modal')) return;
+      if (container.closest?.('.sv-panel') || container.closest?.('.sv-ui') || container.closest?.('.sv-modal')) return;
 
-      const surfaceEl = container.closest?.('[data-slide-id]') || container.closest?.('.sv2-slide-surface');
+      const surfaceEl = container.closest?.('[data-slide-id]') || container.closest?.('.sv-slide-surface');
       if (!surfaceEl) return;
       const slideId = surfaceEl.getAttribute('data-slide-id') || surfaceEl.id;
       if (!slideId) return;
@@ -1590,7 +1605,7 @@
 
       // Remove dragging class from marker
       const marker = markersEl.querySelector(`[data-comment-id="${CSS.escape(dragState.commentId)}"]`);
-      if (marker) marker.classList.remove('sv2-marker-dragging');
+      if (marker) marker.classList.remove('sv-marker-dragging');
 
       // Only update if actually moved
       if (dragState.hasMoved) {
@@ -1667,9 +1682,9 @@
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
     document.addEventListener('click', (e) => {
-      if (!panelEl.classList.contains('sv2-active')) return;
+      if (!panelEl.classList.contains('sv-active')) return;
       const t = e.target;
-      if (t.closest('.sv2-panel') || t.closest('.sv2-marker') || t.closest('.sv2-inline') || t.closest('.sv2-modal')) return;
+      if (t.closest('.sv-panel') || t.closest('.sv-marker') || t.closest('.sv-inline') || t.closest('.sv-modal')) return;
       const sel = window.getSelection();
       if (sel && sel.toString().trim()) return;
       closePanel();
@@ -1706,17 +1721,17 @@
       if (total === 0) {
         // No comments - hide badge
         countEl.textContent = '';
-        countEl.classList.add('sv2-hidden');
-        countEl.classList.remove('sv2-badge-resolved');
+        countEl.classList.add('sv-hidden');
+        countEl.classList.remove('sv-badge-resolved');
       } else if (unresolved === 0) {
         // All resolved - green badge with checkmark + total
         countEl.textContent = '✓ ' + total;
-        countEl.classList.remove('sv2-hidden');
-        countEl.classList.add('sv2-badge-resolved');
+        countEl.classList.remove('sv-hidden');
+        countEl.classList.add('sv-badge-resolved');
       } else {
         // Some unresolved - amber badge with unresolved/total
         countEl.textContent = unresolved + '/' + total;
-        countEl.classList.remove('sv2-hidden', 'sv2-badge-resolved');
+        countEl.classList.remove('sv-hidden', 'sv-badge-resolved');
       }
     });
 
@@ -1876,7 +1891,8 @@
     };
   }
 
-  window.SlidesV2 = {
+  window.SlideVibing = {
+    version: '1.0.0',
     init: initCore,
     generateCuid,
     generateSlideId,

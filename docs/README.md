@@ -53,13 +53,13 @@ A no-build slide presentation runtime built on Reveal.js with scroll-based navig
       disableLayout: true
     });
 
-    window.SlidesV2.init({
+    window.SlideVibing.init({
       deckId: 'my-deck',
       selectors: {
-        slideSurface: '.sv2-slide-surface'
+        slideSurface: '.sv-slide-surface'
       },
       pdf: {
-        buttonId: 'sv2DownloadPdfBtn',
+        buttonId: 'svDownloadPdfBtn',
         unlockOnLastSlide: true
       },
       comments: {

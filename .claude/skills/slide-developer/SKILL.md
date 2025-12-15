@@ -12,22 +12,22 @@ Technical expertise for building presentations with the Slide-Vibing runtime on 
 ### Basic Slide Template
 ```html
 <section class="bg-slate-50" style="min-height:100vh;">
-  <div class="sv2-slide-surface bg-white border border-slate-200 rounded-2xl shadow-xl p-10 max-w-[900px]"
+  <div class="sv-slide-surface bg-white border border-slate-200 rounded-2xl shadow-xl p-10 max-w-[900px]"
        data-slide-id="slide-{cuid}"
        data-slide-title="Slide Title">
     <!-- Content here -->
     <div class="flex items-center justify-between">
       <h2 class="text-2xl font-bold text-slate-800">Title</h2>
       <div class="text-xs text-slate-500">
-        <span data-sv2-slide-index></span> / <span data-sv2-slide-total></span>
+        <span data-sv-slide-index></span> / <span data-sv-slide-total></span>
       </div>
     </div>
     <p class="mt-4 text-slate-600">Content...</p>
 
     <!-- Navigation -->
     <div class="mt-8 flex gap-3">
-      <button class="sv2-btn" type="button" data-sv2-nav="prev">Prev</button>
-      <button class="sv2-btn sv2-btn-primary" type="button" data-sv2-nav="next">Next</button>
+      <button class="sv-btn" type="button" data-sv-nav="prev">Prev</button>
+      <button class="sv-btn sv-btn-primary" type="button" data-sv-nav="next">Next</button>
     </div>
   </div>
 </section>
@@ -41,14 +41,14 @@ Technical expertise for building presentations with the Slide-Vibing runtime on 
 ```
 
 ### Generate Slide IDs
-Use `SlidesV2.generateSlideId()` in browser console or create CUIDs matching pattern: `slide-c{random}`
+Use `SlideVibing.generateSlideId()` in browser console or create CUIDs matching pattern: `slide-c{random}`
 
 ## Navigation Attributes
 
 | Attribute | Values | Purpose |
 |-----------|--------|---------|
-| `data-sv2-nav` | `next`, `prev`, `first`, `last` | Navigation buttons |
-| `data-sv2-scroll-to` | `slide-{id}` | Jump to specific slide |
+| `data-sv-nav` | `next`, `prev`, `first`, `last` | Navigation buttons |
+| `data-sv-scroll-to` | `slide-{id}` | Jump to specific slide |
 
 ## Canvas Animations
 
@@ -101,8 +101,8 @@ comments: {
 
 ```javascript
 pdf: {
-  buttonId: 'sv2DownloadPdfBtn',
-  unlockKey: 'sv2DeckCompleted',
+  buttonId: 'svDownloadPdfBtn',
+  unlockKey: 'svDeckCompleted',
   unlockOnLastSlide: true
 }
 ```
@@ -113,7 +113,7 @@ pdf: {
 ## Reactive State API
 
 ```javascript
-const { createSignal, createMemo, createEffect, batch } = SlidesV2.state;
+const { createSignal, createMemo, createEffect, batch } = SlideVibing.state;
 
 const [value, setValue] = createSignal(initial);
 const derived = createMemo(() => compute(value()));
@@ -125,14 +125,14 @@ batch(() => { /* multiple updates */ });
 
 | Class | Purpose |
 |-------|---------|
-| `sv2-slide-surface` | Main slide content container |
-| `sv2-btn` | Base button style |
-| `sv2-btn-primary` | Primary action (indigo) |
-| `sv2-btn-secondary` | Secondary action (gray) |
-| `sv2-btn-success` | Success action (emerald) |
-| `sv2-btn-danger` | Danger action (red) |
-| `sv2-hidden` | Hide element |
-| `sv2-canvas` | Styled canvas element |
+| `sv-slide-surface` | Main slide content container |
+| `sv-btn` | Base button style |
+| `sv-btn-primary` | Primary action (indigo) |
+| `sv-btn-secondary` | Secondary action (gray) |
+| `sv-btn-success` | Success action (emerald) |
+| `sv-btn-danger` | Danger action (red) |
+| `sv-hidden` | Hide element |
+| `sv-canvas` | Styled canvas element |
 
 ## Tailwind Integration
 

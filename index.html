@@ -2,227 +2,581 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Slides v2 Skeleton</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slide-Vibing Demo</title>
 
-  <!-- Reveal.js (scroll view) -->
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Reveal.js CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.2.1/dist/reveal.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.2.1/dist/theme/white.css">
-  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.2.1/dist/reveal.js"></script>
 
-  <!-- Optional utility styling for quick layout -->
+  <!-- Tailwind for styling -->
   <script src="https://cdn.tailwindcss.com"></script>
 
+  <!-- Slides Runtime CSS -->
   <link rel="stylesheet" href="./slides-runtime.css">
+
+  <style>
+    :root {
+      --color-primary: #6366f1;
+      --color-primary-dark: #4f46e5;
+      --color-accent: #10b981;
+      --color-slate: #334155;
+      --r-main-font-size: 34px;
+    }
+
+    .reveal {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      color: var(--color-slate);
+    }
+
+    .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      font-weight: 700;
+    }
+
+    /* Cover slide gradient */
+    .cover-gradient {
+      background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4338ca 100%);
+    }
+
+    /* Card hover effects */
+    .card-hover {
+      transition: all 0.2s ease;
+    }
+    .card-hover:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px -8px rgba(0,0,0,0.15);
+    }
+
+    /* Scroll hint animation */
+    .scroll-hint {
+      animation: bounce 2s infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(10px); }
+    }
+
+    /* Feature badge */
+    .feature-badge {
+      background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+    }
+  </style>
 </head>
 <body>
-  <!-- Slides v2 UI (overlay) -->
-  <div class="sv2-ui">
-    <button id="sv2CommentToggle" class="sv2-btn" type="button">
-      <span>Comments</span>
-      <span id="sv2CommentCount" class="sv2-badge">0</span>
-    </button>
-
-    <div class="sv2-status" title="Local comments (no server configured)">
-      <span id="sv2SyncDot" class="sv2-dot"></span>
-      <span id="sv2SyncStatus">Local</span>
-    </div>
-
-    <button id="sv2DownloadPdfBtn" class="sv2-btn sv2-btn-primary sv2-hidden" type="button">
-      Download PDF
-    </button>
-  </div>
-
-  <div id="sv2CommentMarkers"></div>
-  <div id="sv2InlineComments"></div>
-
-  <div id="sv2CommentPanel" class="sv2-panel" aria-hidden="true">
-    <div class="sv2-panel-header">
-      <div id="sv2PanelTitle" class="sv2-panel-title">Comment</div>
-      <button id="sv2ClosePanel" class="sv2-panel-close" type="button" aria-label="Close">&times;</button>
-    </div>
-    <div id="sv2PanelBody" class="sv2-panel-body"></div>
-  </div>
-
-  <div id="sv2NameModal" class="sv2-modal sv2-hidden" role="dialog" aria-modal="true" aria-label="Enter your name">
-    <div class="sv2-modal-content">
-      <h3 class="sv2-modal-title">Enter your name</h3>
-      <input id="sv2NameInput" class="sv2-input" type="text" placeholder="Your name..." />
-      <button id="sv2NameSubmit" class="sv2-btn sv2-btn-primary" type="button">Continue</button>
-    </div>
-  </div>
-
   <!-- Reveal.js Container -->
   <div class="reveal">
     <div class="slides">
-      <!-- Note: use stable slide ids like `slide-<cuid>`; helper available as `SlidesV2.generateSlideId()` -->
-      <!-- Cover (excluded from numbering) -->
-      <section data-slide-kind="cover" class="bg-gradient-to-br from-slate-50 via-indigo-50 to-slate-100" style="min-height:100vh;">
-        <div class="sv2-slide-surface bg-white border border-slate-200 rounded-2xl shadow-2xl p-10 max-w-[900px]"
-             data-slide-id="slide-cxv2r1a8m3p7t9k2w5n6q0b4d"
-             data-slide-title="Cover">
-          <div class="flex items-center justify-between">
-            <h1 class="text-3xl font-bold text-slate-800">Slides v2 Skeleton</h1>
-            <div class="text-xs text-slate-500">
-              <span data-sv2-slide-index></span> / <span data-sv2-slide-total></span>
+
+      <!-- SLIDE 1: Cover -->
+      <section data-slide-kind="cover" style="min-height: 100vh; position: relative;">
+        <div class="cover-gradient" style="width: 100%; min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative;">
+          <div id="slide-tmpl01cover7x9k2m4p" data-slide-id="slide-tmpl01cover7x9k2m4p" data-slide-title="Cover"
+               class="sv-slide-surface bg-white/95 backdrop-blur border border-white/20 rounded-2xl shadow-2xl p-8 w-[900px] text-center flex flex-col" style="max-height: calc(100vh - 32px);">
+
+            <!-- Logo placeholder -->
+            <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                <path d="M2 17l10 5 10-5"></path>
+                <path d="M2 12l10 5 10-5"></path>
+              </svg>
+            </div>
+
+            <!-- Title -->
+            <h1 class="text-3xl font-bold text-slate-800 mb-3 leading-tight">
+              Slide-Vibing<br>
+              <span class="text-indigo-600">Demo Deck</span>
+            </h1>
+            <p class="text-sm text-slate-600 mb-6">A no-build presentation runtime with scroll navigation, comments, and canvas animations</p>
+
+            <!-- Meta pills -->
+            <div class="flex justify-center gap-2 flex-wrap mb-6">
+              <div class="flex items-center gap-1.5 bg-slate-100 border border-slate-200 rounded-full px-3 py-1.5 text-xs text-slate-700">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+                <span>5 min read</span>
+              </div>
+              <div class="flex items-center gap-1.5 bg-indigo-50 border border-indigo-200 rounded-full px-3 py-1.5 text-xs text-indigo-700">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+                <span>Comments enabled</span>
+              </div>
+            </div>
+
+            <!-- Action buttons -->
+            <div class="flex justify-center gap-3">
+              <button class="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full px-5 py-2.5 text-xs font-semibold shadow-lg hover:shadow-xl transition-all cursor-pointer" data-sv-nav="next">
+                <span>Get Started</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </button>
+              <button id="downloadPdfBtn" class="flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-full px-5 py-2.5 text-xs font-semibold shadow-lg hover:shadow-xl transition-all cursor-pointer sv-hidden">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                <span>Download PDF</span>
+              </button>
             </div>
           </div>
-          <p class="mt-4 text-slate-600">A minimal deck that uses a reusable runtime for navigation, numbering, PDF gating, and comments.</p>
+        </div>
 
-          <div class="mt-8 flex gap-3">
-            <button class="sv2-btn sv2-btn-primary" type="button" data-sv2-nav="next">Start</button>
-            <button class="sv2-btn" type="button" data-sv2-scroll-to="slide-cxv2h7j2k9m4p1x8w3n5v0q2r">Scroll to “Why”</button>
+        <!-- Scroll hint -->
+        <div class="scroll-hint absolute bottom-6 left-1/2 transform -translate-x-1/2 text-white/70 text-xs flex flex-col items-center gap-1.5 cursor-pointer" data-sv-nav="next">
+          <span>Scroll to explore</span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 5v14M19 12l-7 7-7-7"/>
+          </svg>
+        </div>
+      </section>
+
+      <!-- SLIDE 2: Features Overview -->
+      <section style="min-height: 100vh; position: relative;">
+        <div class="bg-gradient-to-br from-slate-50 via-white to-indigo-50" style="width: 100%; min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative;">
+          <!-- Navigation overlay -->
+          <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex items-center gap-3">
+            <button class="flex items-center gap-2 bg-white/90 backdrop-blur border border-slate-200 rounded-full px-3 py-1.5 text-[11px] text-slate-600 font-medium cursor-pointer hover:bg-white transition-colors shadow-md" data-sv-nav="prev">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+              <span>Back</span>
+            </button>
+            <button class="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full px-3 py-1.5 text-[11px] font-medium cursor-pointer transition-colors shadow-md" data-sv-nav="next">
+              <span>Try Comments</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+
+          <div id="slide-tmpl02feat3n7q1w9m" data-slide-id="slide-tmpl02feat3n7q1w9m" data-slide-title="Features Overview"
+               class="sv-slide-surface bg-white border border-slate-200 rounded-2xl shadow-2xl p-5 w-[1200px] flex flex-col" style="max-height: calc(100vh - 32px);">
+
+            <!-- Header -->
+            <header class="mb-4">
+              <div class="flex items-center gap-3 mb-2">
+                <span class="text-[10px] font-bold text-white bg-indigo-600 rounded-full px-2.5 py-0.5">1 of 4</span>
+                <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wide">Overview</span>
+              </div>
+              <h2 class="text-xl font-bold text-slate-800">Core Features at a Glance</h2>
+              <p class="text-sm text-slate-600 mt-1">Everything you need for scroll-based presentations</p>
+            </header>
+
+            <!-- Feature cards grid -->
+            <div class="grid grid-cols-3 gap-3 flex-1">
+
+              <!-- Feature 1: Scroll Navigation -->
+              <div class="card-hover bg-gradient-to-br from-indigo-50 to-white border border-indigo-100 rounded-xl p-3">
+                <div class="w-8 h-8 rounded-lg bg-indigo-100 flex items-center justify-center mb-2">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2">
+                    <path d="M12 19V5M5 12l7-7 7 7"/>
+                  </svg>
+                </div>
+                <h3 class="text-xs font-bold text-slate-800 mb-1">Scroll Navigation</h3>
+                <p class="text-[10px] text-slate-600 leading-relaxed">Smooth scroll-snap navigation with keyboard support. Works on any device.</p>
+              </div>
+
+              <!-- Feature 2: Comments -->
+              <div class="card-hover bg-gradient-to-br from-emerald-50 to-white border border-emerald-100 rounded-xl p-3">
+                <div class="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center mb-2">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                  </svg>
+                </div>
+                <h3 class="text-xs font-bold text-slate-800 mb-1">Anchored Comments</h3>
+                <p class="text-[10px] text-slate-600 leading-relaxed">Select text to add comments. Supports local storage or Power Automate backend.</p>
+              </div>
+
+              <!-- Feature 3: PDF Export -->
+              <div class="card-hover bg-gradient-to-br from-amber-50 to-white border border-amber-100 rounded-xl p-3">
+                <div class="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center mb-2">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                  </svg>
+                </div>
+                <h3 class="text-xs font-bold text-slate-800 mb-1">PDF Export</h3>
+                <p class="text-[10px] text-slate-600 leading-relaxed">Gated download unlocked on reaching the final slide. Uses Reveal.js print mode.</p>
+              </div>
+
+              <!-- Feature 4: Canvas Animations -->
+              <div class="card-hover bg-gradient-to-br from-purple-50 to-white border border-purple-100 rounded-xl p-3">
+                <div class="w-8 h-8 rounded-lg bg-purple-100 flex items-center justify-center mb-2">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9333ea" stroke-width="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                    <polyline points="21 15 16 10 5 21"></polyline>
+                  </svg>
+                </div>
+                <h3 class="text-xs font-bold text-slate-800 mb-1">Canvas Animations</h3>
+                <p class="text-[10px] text-slate-600 leading-relaxed">Per-slide animated canvases with play/pause on click. Great for diagrams.</p>
+              </div>
+
+              <!-- Feature 5: Reactive State -->
+              <div class="card-hover bg-gradient-to-br from-rose-50 to-white border border-rose-100 rounded-xl p-3">
+                <div class="w-8 h-8 rounded-lg bg-rose-100 flex items-center justify-center mb-2">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e11d48" stroke-width="2">
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                  </svg>
+                </div>
+                <h3 class="text-xs font-bold text-slate-800 mb-1">Reactive State</h3>
+                <p class="text-[10px] text-slate-600 leading-relaxed">Fine-grained reactivity with signals, memos, and effects. SolidJS-inspired.</p>
+              </div>
+
+              <!-- Feature 6: No Build -->
+              <div class="card-hover bg-gradient-to-br from-cyan-50 to-white border border-cyan-100 rounded-xl p-3">
+                <div class="w-8 h-8 rounded-lg bg-cyan-100 flex items-center justify-center mb-2">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0891b2" stroke-width="2">
+                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
+                  </svg>
+                </div>
+                <h3 class="text-xs font-bold text-slate-800 mb-1">No Build Required</h3>
+                <p class="text-[10px] text-slate-600 leading-relaxed">Pure HTML, CSS, JS. Just open in a browser or serve statically.</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      <section class="bg-slate-50" style="min-height:100vh;">
-        <div class="sv2-slide-surface bg-white border border-slate-200 rounded-2xl shadow-xl p-10 max-w-[900px]"
-             data-slide-id="slide-cxv2h7j2k9m4p1x8w3n5v0q2r"
-             data-slide-title="Why Now">
-          <div class="flex items-center justify-between">
-            <h2 class="text-2xl font-bold text-slate-800">Why Now</h2>
-            <div class="text-xs text-slate-500">
-              <span data-sv2-slide-index></span> / <span data-sv2-slide-total></span>
-            </div>
+      <!-- SLIDE 3: Comments Demo -->
+      <section style="min-height: 100vh; position: relative;">
+        <div class="bg-gradient-to-br from-emerald-50 via-white to-slate-50" style="width: 100%; min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative;">
+          <!-- Navigation overlay -->
+          <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex items-center gap-3">
+            <button class="flex items-center gap-2 bg-white/90 backdrop-blur border border-slate-200 rounded-full px-3 py-1.5 text-[11px] text-slate-600 font-medium cursor-pointer hover:bg-white transition-colors shadow-md" data-sv-nav="prev">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+              <span>Back</span>
+            </button>
+            <button class="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full px-3 py-1.5 text-[11px] font-medium cursor-pointer transition-colors shadow-md" data-sv-nav="next">
+              <span>See Animation</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
           </div>
-          <p class="mt-4 text-slate-600">Select text anywhere on a slide to create an anchored comment.</p>
 
-          <div class="mt-8 flex gap-3">
-            <button class="sv2-btn" type="button" data-sv2-nav="prev">Prev</button>
-            <button class="sv2-btn sv2-btn-primary" type="button" data-sv2-nav="next">Next</button>
+          <div id="slide-tmpl03comm5k8m2p4w" data-slide-id="slide-tmpl03comm5k8m2p4w" data-slide-title="Comments Demo"
+               class="sv-slide-surface bg-white border border-slate-200 rounded-2xl shadow-2xl p-5 w-[1200px] flex flex-col" style="max-height: calc(100vh - 32px);">
+
+            <!-- Header -->
+            <header class="mb-3">
+              <div class="flex items-center gap-3 mb-2">
+                <span class="text-[10px] font-bold text-white bg-emerald-600 rounded-full px-2.5 py-0.5">2 of 4</span>
+                <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wide">Interactive</span>
+              </div>
+              <h2 class="text-xl font-bold text-slate-800">Try the Comment System</h2>
+              <p class="text-sm text-slate-600 mt-1">Select any text below to create an anchored comment</p>
+            </header>
+
+            <!-- Demo content for commenting -->
+            <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-3 flex-1">
+              <h3 class="text-sm font-semibold text-slate-800 mb-2">Sample Content for Commenting</h3>
+
+              <p class="text-xs text-slate-700 mb-3 leading-relaxed">
+                <strong>This paragraph is perfect for testing comments.</strong> Select any portion of this text with your mouse, and a comment dialog will appear. Your comments are anchored to the specific text you selected, making it easy to provide contextual feedback.
+              </p>
+
+              <p class="text-xs text-slate-700 mb-3 leading-relaxed">
+                Comments support multiple reviewers. Each comment shows the author's name and timestamp. You can edit or delete your own comments. The draggable markers show where comments are anchored on the slide.
+              </p>
+
+              <div class="bg-white border border-slate-200 rounded-lg p-3">
+                <h4 class="text-xs font-bold text-slate-800 mb-2">Key Features:</h4>
+                <ul class="text-[11px] text-slate-600 space-y-1.5">
+                  <li class="flex items-start gap-2">
+                    <span class="text-emerald-500">✓</span>
+                    <span><strong>Text-anchored comments</strong> - Comments stay connected to specific text selections</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <span class="text-emerald-500">✓</span>
+                    <span><strong>Draggable markers</strong> - Reposition comment indicators anywhere on the slide</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <span class="text-emerald-500">✓</span>
+                    <span><strong>Offline support</strong> - Comments sync when connection is restored</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <span class="text-emerald-500">✓</span>
+                    <span><strong>Conflict detection</strong> - Handles concurrent edits gracefully</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Tip box -->
+            <div class="flex items-start gap-2 bg-amber-50 border border-amber-200 rounded-lg p-3">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" class="shrink-0 mt-0.5">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="16" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+              </svg>
+              <div class="text-[11px] text-amber-800">
+                <strong>Tip:</strong> Click the "Comments" button in the top-right corner to toggle the comment panel and see all comments on this slide.
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      <section class="bg-slate-50" style="min-height:100vh;">
-        <div class="sv2-slide-surface bg-white border border-slate-200 rounded-2xl shadow-xl p-10 max-w-[900px]"
-             data-slide-id="slide-cxv2d5k8m2p4w7n3x9j6r1t0q"
-             data-slide-title="Demo">
-          <div class="flex items-center justify-between">
-            <h2 class="text-2xl font-bold text-slate-800">Demo</h2>
-            <div class="text-xs text-slate-500">
-              <span data-sv2-slide-index></span> / <span data-sv2-slide-total></span>
-            </div>
+      <!-- SLIDE 4: Canvas Animation Demo -->
+      <section style="min-height: 100vh; position: relative;">
+        <div class="bg-gradient-to-br from-purple-50 via-white to-indigo-50" style="width: 100%; min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative;">
+          <!-- Navigation overlay -->
+          <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex items-center gap-3">
+            <button class="flex items-center gap-2 bg-white/90 backdrop-blur border border-slate-200 rounded-full px-3 py-1.5 text-[11px] text-slate-600 font-medium cursor-pointer hover:bg-white transition-colors shadow-md" data-sv-nav="prev">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+              <span>Back</span>
+            </button>
+            <button class="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full px-3 py-1.5 text-[11px] font-medium cursor-pointer transition-colors shadow-md" data-sv-nav="next">
+              <span>Finish</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
           </div>
-          <p class="mt-4 text-slate-600">This slide has a canvas controller stub (click to play/pause).</p>
-          <canvas id="demoCanvas" width="820" height="240" class="sv2-canvas"></canvas>
 
-          <div class="mt-8 flex gap-3">
-            <button class="sv2-btn" type="button" data-sv2-nav="prev">Prev</button>
-            <button class="sv2-btn sv2-btn-primary" type="button" data-sv2-nav="next">Next</button>
+          <div id="slide-tmpl04canv9j6r1t0q" data-slide-id="slide-tmpl04canv9j6r1t0q" data-slide-title="Canvas Animation"
+               class="sv-slide-surface bg-white border border-slate-200 rounded-2xl shadow-2xl p-5 w-[1200px] flex flex-col" style="max-height: calc(100vh - 32px);">
+
+            <!-- Header -->
+            <header class="mb-3">
+              <div class="flex items-center gap-3 mb-2">
+                <span class="text-[10px] font-bold text-white bg-purple-600 rounded-full px-2.5 py-0.5">3 of 4</span>
+                <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wide">Animation</span>
+              </div>
+              <h2 class="text-xl font-bold text-slate-800">Canvas Animation Demo</h2>
+              <p class="text-sm text-slate-600 mt-1">Click the canvas below to play/pause the animation</p>
+            </header>
+
+            <!-- Canvas container -->
+            <div class="bg-slate-900 rounded-xl overflow-hidden mb-3 shadow-lg">
+              <canvas id="demoCanvas" width="1140" height="180" class="sv-canvas w-full cursor-pointer"></canvas>
+            </div>
+
+            <!-- Code example -->
+            <div class="bg-slate-800 rounded-xl p-3 overflow-x-auto flex-1">
+              <div class="flex items-center gap-2 mb-2">
+                <div class="w-2 h-2 rounded-full bg-red-500"></div>
+                <div class="w-2 h-2 rounded-full bg-yellow-500"></div>
+                <div class="w-2 h-2 rounded-full bg-green-500"></div>
+                <span class="text-slate-400 text-[10px] ml-2">Canvas controller example</span>
+              </div>
+              <pre class="text-[11px] text-slate-300 font-mono leading-relaxed"><code>canvas: {
+  controllers: [{
+    canvasId: 'demoCanvas',
+    slideId: 'slide-tmpl04canv9j6r1t0q',
+    draw({ ctx, width, height, t, isPlaying }) {
+      // Your animation logic here
+      // t = elapsed time in ms, isPlaying = current play state
+    }
+  }]
+}</code></pre>
+            </div>
           </div>
         </div>
       </section>
 
-      <section class="bg-slate-50" style="min-height:100vh;">
-        <div class="sv2-slide-surface bg-white border border-slate-200 rounded-2xl shadow-xl p-10 max-w-[900px]"
-             data-slide-id="slide-cxv2e3n7q1w9m2k5p8x4r6t0v"
-             data-slide-title="End">
-          <div class="flex items-center justify-between">
-            <h2 class="text-2xl font-bold text-slate-800">End</h2>
-            <div class="text-xs text-slate-500">
-              <span data-sv2-slide-index></span> / <span data-sv2-slide-total></span>
-            </div>
+      <!-- SLIDE 5: End / CTA -->
+      <section style="min-height: 100vh; position: relative;">
+        <div class="cover-gradient" style="width: 100%; min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative;">
+          <!-- Navigation overlay -->
+          <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex items-center gap-3">
+            <button class="flex items-center gap-2 bg-white/90 backdrop-blur border border-white/20 rounded-full px-3 py-1.5 text-[11px] text-slate-600 font-medium cursor-pointer hover:bg-white transition-colors shadow-md" data-sv-nav="first">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+              <span>Back to Start</span>
+            </button>
           </div>
-          <p class="mt-4 text-slate-600">Reaching this slide unlocks PDF download.</p>
 
-          <div class="mt-8 flex gap-3">
-            <button class="sv2-btn" type="button" data-sv2-nav="prev">Prev</button>
-            <button class="sv2-btn" type="button" data-sv2-nav="first">Back to start</button>
+          <div id="slide-tmpl05end8x4r6t0v" data-slide-id="slide-tmpl05end8x4r6t0v" data-slide-title="Get Started"
+               class="sv-slide-surface bg-white/95 backdrop-blur border border-white/20 rounded-2xl shadow-2xl p-8 w-[900px] text-center flex flex-col" style="max-height: calc(100vh - 32px);">
+
+            <!-- Success icon -->
+            <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-emerald-100 flex items-center justify-center">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+              </svg>
+            </div>
+
+            <h2 class="text-2xl font-bold text-slate-800 mb-3">You've Completed the Demo!</h2>
+            <p class="text-sm text-slate-600 mb-6">The PDF download button is now unlocked. You can download this presentation or start building your own.</p>
+
+            <!-- Stats -->
+            <div class="flex justify-center gap-8 mb-6">
+              <div class="text-center">
+                <div class="text-2xl font-bold text-indigo-600">~1900</div>
+                <div class="text-[11px] text-slate-500">Lines of runtime code</div>
+              </div>
+              <div class="text-center">
+                <div class="text-2xl font-bold text-emerald-600">0</div>
+                <div class="text-[11px] text-slate-500">Build dependencies</div>
+              </div>
+              <div class="text-center">
+                <div class="text-2xl font-bold text-purple-600">∞</div>
+                <div class="text-[11px] text-slate-500">Possibilities</div>
+              </div>
+            </div>
+
+            <!-- Action buttons -->
+            <div class="flex justify-center gap-3 flex-wrap">
+              <a href="https://github.com/ludovicfourrage/slide-vibing" target="_blank"
+                 class="flex items-center gap-2 bg-slate-800 hover:bg-slate-900 text-white rounded-full px-4 py-2 text-xs font-semibold transition-colors">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                </svg>
+                <span>View on GitHub</span>
+              </a>
+            </div>
           </div>
         </div>
       </section>
+
     </div>
   </div>
 
+  <!-- Reveal.js -->
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.2.1/dist/reveal.js"></script>
+
+  <!-- Slides Runtime -->
   <script src="./slides-runtime.js"></script>
+
+  <!-- Initialize -->
   <script>
     Reveal.initialize({
+      // Scroll view configuration
       view: 'scroll',
       scrollProgress: true,
       scrollLayout: 'full',
       scrollSnap: 'mandatory',
+
+      // Disable controls since we're using scroll
       controls: false,
       progress: false,
+
+      // Keyboard navigation
       keyboard: true,
+
+      // Hash for URL tracking
       hash: true,
+
+      // No auto-sliding
       autoSlide: 0,
+
+      // Touch support
       touch: true,
+
+      // Center slides
       center: true,
+
+      // No transitions in scroll mode
       transition: 'none',
+
+      // Disable slide numbers
       slideNumber: false,
+
+      // Percentage-based sizing
       width: '100%',
       height: '100%',
+
+      // No margin
       margin: 0,
+
+      // Disable scaling
       minScale: 1,
       maxScale: 1,
+
+      // Disable layout management
       disableLayout: true
-    });
-
-    window.SlidesV2.init({
-      deckId: 'slide-vibing-skeleton',
-      selectors: {
-        slideSurface: '.sv2-slide-surface'
-      },
-      pdf: {
-        buttonId: 'sv2DownloadPdfBtn',
-        unlockKey: 'sv2DeckCompleted',
-        unlockOnLastSlide: true
-      },
-      comments: {
-        enabled: true,
-        storage: {
-          type: 'local'
-          // To use the Power Automate / SharePoint backend (like the PoC in `/slides`), configure:
-          // type: 'powerAutomate',
-          // requireBackend: true, // Disable commenting when backend unreachable
-          // apiKey: '<X-Api-Key value>',
-          // readUrl: '<READ_URL>',
-          // writeUrl: '<WRITE_URL>',
-          // updateUrl: '<UPDATE_URL>',
-          // deleteUrl: '<DELETE_URL>'
+    }).then(() => {
+      // Initialize SlideVibing after Reveal is ready
+      window.SlideVibing?.init({
+        deckId: 'slide-vibing-demo',
+        selectors: {
+          slideSurface: '.sv-slide-surface'
         },
-        ui: {
-          toggleId: 'sv2CommentToggle',
-          countId: 'sv2CommentCount',
-          syncDotId: 'sv2SyncDot',
-          markersId: 'sv2CommentMarkers',
-          inlineId: 'sv2InlineComments',
-          panelId: 'sv2CommentPanel',
-          panelTitleId: 'sv2PanelTitle',
-          panelBodyId: 'sv2PanelBody',
-          closePanelId: 'sv2ClosePanel',
-          nameModalId: 'sv2NameModal',
-          nameInputId: 'sv2NameInput',
-          nameSubmitId: 'sv2NameSubmit',
-          syncStatusId: 'sv2SyncStatus'
-        }
-      },
-      canvas: {
-        controllers: [
-          {
-            canvasId: 'demoCanvas',
-            slideId: 'slide-cxv2d5k8m2p4w7n3x9j6r1t0q',
-            draw({ ctx, width, height, t, isPlaying }) {
-              ctx.clearRect(0, 0, width, height);
-              ctx.fillStyle = '#0f172a';
-              ctx.fillRect(0, 0, width, height);
-
-              ctx.fillStyle = '#ffffff';
-              ctx.font = '16px system-ui, -apple-system, Segoe UI, Roboto, Arial';
-              ctx.fillText(isPlaying ? 'Playing (click to pause)' : 'Paused (click to play)', 18, 32);
-
-              const x = 40 + (width - 80) * (0.5 + 0.45 * Math.sin(t / 600));
-              ctx.beginPath();
-              ctx.arc(x, height / 2 + 20 * Math.cos(t / 400), 18, 0, Math.PI * 2);
-              ctx.fillStyle = '#6366f1';
-              ctx.fill();
-            }
+        pdf: {
+          buttonId: 'downloadPdfBtn',
+          unlockOnLastSlide: true,
+          unlockKey: 'slideDeckCompleted'
+        },
+        comments: {
+          enabled: true,
+          storage: {
+            type: 'local'
+            // To use Power Automate backend, configure:
+            // type: 'powerAutomate',
+            // requireBackend: true,
+            // pollIntervalMs: 3000,
+            // apiKey: 'YOUR_API_KEY',
+            // readUrl: 'YOUR_READ_URL',
+            // writeUrl: 'YOUR_WRITE_URL',
+            // updateUrl: 'YOUR_UPDATE_URL',
+            // deleteUrl: 'YOUR_DELETE_URL'
           }
-        ]
-      }
+        },
+        canvas: {
+          controllers: [
+            {
+              canvasId: 'demoCanvas',
+              slideId: 'slide-tmpl04canv9j6r1t0q',
+              draw({ ctx, width, height, t, isPlaying }) {
+                ctx.clearRect(0, 0, width, height);
+
+                // Background
+                ctx.fillStyle = '#0f172a';
+                ctx.fillRect(0, 0, width, height);
+
+                // Status text
+                ctx.fillStyle = '#94a3b8';
+                ctx.font = '12px Inter, system-ui, sans-serif';
+                ctx.fillText(isPlaying ? 'Playing - click to pause' : 'Paused - click to play', 16, 24);
+
+                // Animated circles - adjusted for 1140x180 canvas
+                const centerY = height / 2 + 5;
+                const colors = ['#6366f1', '#10b981', '#f59e0b', '#e11d48', '#8b5cf6'];
+
+                for (let i = 0; i < 5; i++) {
+                  const offset = (t / 500 + i * 0.4) % (Math.PI * 2);
+                  const x = 120 + i * 220;  // Wider spacing for 1140px width
+                  const y = centerY + Math.sin(offset) * 25;  // Reduced amplitude for 180px height
+                  const radius = 16 + Math.sin(offset + Math.PI/2) * 6;  // Smaller circles
+
+                  // Glow effect
+                  ctx.beginPath();
+                  ctx.arc(x, y, radius + 8, 0, Math.PI * 2);
+                  ctx.fillStyle = colors[i] + '33';
+                  ctx.fill();
+
+                  // Main circle
+                  ctx.beginPath();
+                  ctx.arc(x, y, radius, 0, Math.PI * 2);
+                  ctx.fillStyle = colors[i];
+                  ctx.fill();
+
+                  // Connection line to next
+                  if (i < 4) {
+                    const nextOffset = (t / 500 + (i + 1) * 0.4) % (Math.PI * 2);
+                    const nextX = 120 + (i + 1) * 220;
+                    const nextY = centerY + Math.sin(nextOffset) * 25;
+
+                    ctx.beginPath();
+                    ctx.moveTo(x + radius, y);
+                    ctx.lineTo(nextX - radius, nextY);
+                    ctx.strokeStyle = '#334155';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                  }
+                }
+              }
+            }
+          ]
+        }
+      });
     });
   </script>
+
 </body>
 </html>

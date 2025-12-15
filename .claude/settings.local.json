@@ -17,5 +17,9 @@
       "Bash(cmd /c \"del slides.md navigation.md comments.md pdf.md canvas.md api.md\")",
       "Bash(powershell -Command:*)"
     ]
-  }
+  },
+  "enabledMcpjsonServers": [
+    "slide-vibing-docs"
+  ],
+  "enableAllProjectMcpServers": true
 }
