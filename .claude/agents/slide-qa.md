@@ -77,15 +77,14 @@ For each deck, validate ALL of the following:
 
 **Fix:** Add missing Reveal.js config options.
 
-### 8. Gates Foundation Branding (if applicable)
+### 8. Custom Branding (if applicable)
 
-- [ ] CSS variables defined: `--color-weathered-slate`, `--color-blooming-saffron`, `--color-parchment`
-- [ ] Noto Sans font loaded for headings
-- [ ] Noto Serif font loaded for body text
-- [ ] Content slides use `w-[1400px]` width
-- [ ] Cover slides use `max-w-[900px]` width
+- [ ] Custom CSS variables defined in `:root` (if using custom theme)
+- [ ] Custom fonts loaded (if specified)
+- [ ] Content slides use appropriate width (e.g., `w-[1400px]`)
+- [ ] Cover slides use appropriate width (e.g., `max-w-[900px]`)
 
-**Fix:** Add missing brand colors, fonts, or dimension classes.
+**Fix:** Add missing brand colors, fonts, or dimension classes as needed.
 
 ### 9. CSS Classes
 
