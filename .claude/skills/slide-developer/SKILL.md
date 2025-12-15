@@ -40,8 +40,26 @@ Technical expertise for building presentations with the Slide-Vibing runtime on 
 </section>
 ```
 
-### Generate Slide IDs
-Use `SlideVibing.generateSlideId()` in browser console or create CUIDs matching pattern: `slide-c{random}`
+### Generate Slide IDs (CRITICAL)
+
+Slide IDs MUST use the CUID format. Do NOT use descriptive IDs like `slide-cover` or `slide-intro`.
+
+**How to generate:**
+1. Start with `slide-c`
+2. Append 20-25 random lowercase alphanumeric characters (a-z, 0-9)
+3. Ensure each slide has a unique ID
+
+**Correct examples:**
+- `slide-cm7x9k2p4w8n3v6j1q`
+- `slide-cswgj3ah5zq89xsfpqgybi6ug`
+- `slide-crfwo6uvb5uaye9jbw1hd57jc`
+
+**Incorrect examples:**
+- `slide-cover` (descriptive)
+- `slide-intro-1` (descriptive)
+- `slide-three-forces` (descriptive)
+
+Alternatively, use `SlideVibing.generateSlideId()` in browser console
 
 ## Navigation Attributes
 

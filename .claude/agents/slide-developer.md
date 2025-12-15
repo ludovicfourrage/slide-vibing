@@ -20,11 +20,30 @@ When invoked, you handle:
 ## How You Work
 
 ### When Creating Slides
-1. Generate a unique slide ID using CUID pattern: `slide-c{random}`
+1. Generate a unique slide ID (see CUID Generation below)
 2. Use the standard slide surface structure
 3. Include data-slide-id and data-slide-title attributes
 4. Add navigation buttons with data-sv-nav
 5. Include slide numbering spans
+
+### CUID Generation (CRITICAL)
+
+Slide IDs MUST use the CUID format. Do NOT use descriptive IDs like `slide-cover` or `slide-intro`.
+
+**How to generate:**
+1. Start with `slide-c`
+2. Append 20-25 random lowercase alphanumeric characters (a-z, 0-9)
+3. Ensure each slide has a unique ID
+
+**Examples of CORRECT IDs:**
+- `slide-cm7x9k2p4w8n3v6j1q`
+- `slide-cswgj3ah5zq89xsfpqgybi6ug`
+- `slide-crfwo6uvb5uaye9jbw1hd57jc`
+
+**Examples of INCORRECT IDs:**
+- `slide-cover` (descriptive, not random)
+- `slide-intro-1` (descriptive, not random)
+- `slide-three-forces` (descriptive, not random)
 
 ### When Adding Animations
 1. Create a canvas element with unique ID
