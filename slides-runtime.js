@@ -1730,14 +1730,14 @@
         countEl.classList.remove('sv-badge-resolved');
         toggleBtn.classList.remove('sv-all-resolved', 'sv-has-comments');
       } else if (unresolved === 0) {
-        // All resolved - green badge with total
-        countEl.textContent = total;
+        // All resolved - show checkmark
+        countEl.textContent = '✓';
         countEl.classList.remove('sv-hidden');
         countEl.classList.add('sv-badge-resolved');
         toggleBtn.classList.add('sv-all-resolved', 'sv-has-comments');
       } else {
-        // Some unresolved - amber badge with unresolved/total
-        countEl.textContent = unresolved + '/' + total;
+        // Some unresolved - show total count (color indicates unresolved)
+        countEl.textContent = total;
         countEl.classList.remove('sv-hidden', 'sv-badge-resolved');
         toggleBtn.classList.remove('sv-all-resolved');
         toggleBtn.classList.add('sv-has-comments');
