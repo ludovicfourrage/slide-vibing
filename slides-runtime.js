@@ -1800,7 +1800,15 @@
     function onScrollOrResize() {
       scheduleMarkerRender(100);
     }
-    window.addEventListener('scroll', onScrollOrResize, { passive: true });
+    function onScroll() {
+      // Close any open comment panel when user scrolls
+      if (panelState()) {
+        window.getSelection()?.removeAllRanges();
+        closePanel();
+      }
+      scheduleMarkerRender(100);
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScrollOrResize, { passive: true });
 
     // Note: Reveal.js events are registered centrally in initCore() to avoid duplicate listeners
