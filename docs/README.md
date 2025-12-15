@@ -12,16 +12,15 @@ A no-build slide presentation runtime built on Reveal.js with scroll-based navig
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>My Presentation</title>
 
-  <!-- Reveal.js -->
+  <!-- Reveal.js CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.2.1/dist/reveal.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.2.1/dist/theme/white.css">
-  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.2.1/dist/reveal.js"></script>
 
   <!-- Tailwind (optional) -->
   <script src="https://cdn.tailwindcss.com"></script>
 
   <!-- Slide-Vibing Runtime -->
-  <link rel="stylesheet" href="./slides-runtime.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/ludovicfourrage/slide-vibing@main/slides-runtime.css">
 </head>
 <body>
   <div class="reveal">
@@ -30,7 +29,8 @@ A no-build slide presentation runtime built on Reveal.js with scroll-based navig
     </div>
   </div>
 
-  <script src="./slides-runtime.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.2.1/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/ludovicfourrage/slide-vibing@main/slides-runtime.js"></script>
   <script>
     Reveal.initialize({
       view: 'scroll',
