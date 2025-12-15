@@ -92,6 +92,72 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.sv-btn-comments-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.sv-btn-comments-icon svg {
+  display: block;
+}
+
+.sv-btn-comments-icon .sv-badge {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  font-size: 10px;
+  margin-left: 0;
+}
+
+.sv-btn-comments-label {
+  max-width: 0;
+  opacity: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: max-width 0.2s ease, opacity 0.2s ease;
+}
+
+.sv-btn-comments:hover .sv-btn-comments-label {
+  max-width: 80px;
+  opacity: 1;
+}
+
+.sv-btn-comments:hover {
+  padding-right: 14px;
+}
+
+/* All resolved state - checkmark overlay on icon */
+.sv-btn-comments.sv-all-resolved .sv-btn-comments-icon::after {
+  content: '✓';
+  position: absolute;
+  bottom: -4px;
+  right: -6px;
+  width: 14px;
+  height: 14px;
+  background: var(--sv-emerald);
+  color: white;
+  font-size: 9px;
+  font-weight: bold;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid white;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.sv-btn-comments.sv-all-resolved .sv-btn-comments-icon .sv-badge {
+  display: none;
 }
 
 .sv-sync-dot {

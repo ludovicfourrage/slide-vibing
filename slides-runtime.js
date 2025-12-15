@@ -616,8 +616,13 @@
       <div class="sv-ui">
         <button id="${DEFAULT_COMMENT_UI.toggleId}" class="sv-btn sv-btn-comments" type="button" title="Toggle comments">
           <span id="${DEFAULT_COMMENT_UI.syncDotId}" class="sv-sync-dot"></span>
-          <span>Comments</span>
-          <span id="${DEFAULT_COMMENT_UI.countId}" class="sv-badge">0</span>
+          <span class="sv-btn-comments-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+            <span id="${DEFAULT_COMMENT_UI.countId}" class="sv-badge">0</span>
+          </span>
+          <span class="sv-btn-comments-label">Comments</span>
         </button>
         <span id="${DEFAULT_COMMENT_UI.syncStatusId}" class="sv-hidden"></span>
       </div>
@@ -1723,15 +1728,19 @@
         countEl.textContent = '';
         countEl.classList.add('sv-hidden');
         countEl.classList.remove('sv-badge-resolved');
+        toggleBtn.classList.remove('sv-all-resolved', 'sv-has-comments');
       } else if (unresolved === 0) {
-        // All resolved - green badge with checkmark + total
-        countEl.textContent = '✓ ' + total;
+        // All resolved - green badge with total
+        countEl.textContent = total;
         countEl.classList.remove('sv-hidden');
         countEl.classList.add('sv-badge-resolved');
+        toggleBtn.classList.add('sv-all-resolved', 'sv-has-comments');
       } else {
         // Some unresolved - amber badge with unresolved/total
         countEl.textContent = unresolved + '/' + total;
         countEl.classList.remove('sv-hidden', 'sv-badge-resolved');
+        toggleBtn.classList.remove('sv-all-resolved');
+        toggleBtn.classList.add('sv-has-comments');
       }
     });
 
