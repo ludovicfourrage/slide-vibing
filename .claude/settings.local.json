@@ -23,11 +23,12 @@
       "Bash(git push:*)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Skill(slide-developer)"
+      "Skill(slide-developer)",
+      "Skill(business-consultant)"
     ]
   },
+  "enableAllProjectMcpServers": true,
   "enabledMcpjsonServers": [
     "slide-vibing-docs"
-  ],
-  "enableAllProjectMcpServers": true
+  ]
 }
