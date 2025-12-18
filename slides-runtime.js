@@ -1555,6 +1555,9 @@
       const selectedText = selection.toString().trim();
       if (!selectedText) return;
 
+      // Copy selected text to clipboard (without quotes)
+      navigator.clipboard.writeText(selectedText).catch(() => {});
+
       const range = selection.getRangeAt(0);
       const container = range.commonAncestorContainer.nodeType === 1 ? range.commonAncestorContainer : range.commonAncestorContainer.parentElement;
       if (!container) return;
