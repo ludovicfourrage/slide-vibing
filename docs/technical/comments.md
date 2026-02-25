@@ -48,12 +48,12 @@ comments: {
   storage: {
     type: 'powerAutomate',
     requireBackend: true,  // Disable commenting if backend unreachable
-    apiKey: 'your-api-key',
-    readUrl: 'https://...',
-    writeUrl: 'https://...',
-    updateUrl: 'https://...',
-    deleteUrl: 'https://...',
-    pollIntervalMs: 1000,  // Sync frequency (default: 1000)
+    pollIntervalMs: 3000,  // Sync frequency (default: 1000)
+    apiKey: 'GF-SC-7kX9mP2vL8nQ4wR6yT5bJ3cH1fD0aE',
+    readUrl: 'https://default296b38384bd5496cbd4bf456ea743b.74.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/4f58c51ab8654ed8bae110f9f859dd70/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=3fHjUQCbKal6XMhnNcZiEoV-Y4YQhdKq6HYdTSQftwY',
+    writeUrl: 'https://default296b38384bd5496cbd4bf456ea743b.74.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/cc55d9eccbbc4315a88b938034e876d4/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=rJESPmMtQkRjUQz8ajEhYKWdcYmslqb8VLvQ1jpMrVI',
+    updateUrl: 'https://default296b38384bd5496cbd4bf456ea743b.74.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/8a40a8c8db0f423f9a1c7a18d3b17220/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=dIVpQ--NGYpvAqjcV4aPLQjYmcZphloOCB2qU5-aRQY',
+    deleteUrl: 'https://default296b38384bd5496cbd4bf456ea743b.74.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/6835afb4628647cb88dd225d34c7c7af/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=Tt3EoN4Zo2vbMgCfkdk7FbGxMa1_I1nLY6QgkKJ_FAM',
     errorAfter: 3,         // Show error after N failures
     fallbackAfter: 10      // Fall back to local after N failures
   }

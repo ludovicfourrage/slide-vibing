@@ -40,15 +40,14 @@ pdf: {
 comments: {
   enabled: true,
   storage: {
-    type: 'local',                     // 'local' or 'powerAutomate'
-    // Power Automate options:
-    requireBackend: false,
-    apiKey: '',
-    readUrl: '',
-    writeUrl: '',
-    updateUrl: '',
-    deleteUrl: '',
-    pollIntervalMs: 1000,
+    type: 'powerAutomate',               // 'local' or 'powerAutomate'
+    requireBackend: true,
+    pollIntervalMs: 3000,
+    apiKey: 'GF-SC-7kX9mP2vL8nQ4wR6yT5bJ3cH1fD0aE',
+    readUrl: 'https://default296b...powerplatform.com:443/.../workflows/{id}/...',
+    writeUrl: 'https://default296b...powerplatform.com:443/.../workflows/{id}/...',
+    updateUrl: 'https://default296b...powerplatform.com:443/.../workflows/{id}/...',
+    deleteUrl: 'https://default296b...powerplatform.com:443/.../workflows/{id}/...',
     errorAfter: 3,
     fallbackAfter: 10
   },
