@@ -1,116 +1,125 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
-
 ## Project Overview
 
-This is **Slide-Vibing**, a no-build slide presentation runtime built on Reveal.js with scroll-based navigation. It provides commenting, PDF export gating, and canvas animations without requiring any build tools.
+**Slide-Vibing** is a no-build slide presentation runtime built on Reveal.js with scroll-based navigation. Three files make up the entire project:
+
+- `index.html` — Demo slide deck and configuration template
+- `slides-runtime.js` — Self-contained runtime (~1900 lines) with reactive state, comments, PDF export, canvas animations
+- `slides-runtime.css` — All UI styling (overlays, markers, panels, modals)
+
+There is no build step, no package.json, no bundler. Everything runs from static files via CDN dependencies.
 
 ## Development
 
-This is a static web project with no build step. To run locally:
-- Open `index.html` directly in a browser, or
-- Use any static file server (e.g., `npx serve`, `python -m http.server`)
+Serve statically and open in a browser:
+```bash
+npx serve .
+# or: python -m http.server
+# or: open index.html directly
+```
+
+To verify changes work: open the demo deck, scroll through all 5 slides, test commenting (select text), test the canvas animation (click to play/pause), and confirm the PDF button unlocks on the final slide.
 
 ## Architecture
 
-### Core Files
+### Reactive Core
 
-- **index.html** - Slide deck template using Reveal.js scroll view with `SlideVibing.init()` configuration
-- **slides-runtime.js** - Self-contained runtime (~1900 lines) with reactive state system
-- **slides-runtime.css** - Styling for UI overlay, comment markers, panels, and modals
+The runtime uses a fine-grained reactive system inspired by SolidJS (`createSignal`, `createMemo`, `createEffect`, `batch`, `untrack`). See `slides-runtime.js:1-130` for the implementation. All state flows through signals — do not introduce external state management.
 
-### Runtime Components (`slides-runtime.js`)
+### Subsystems
 
-The runtime uses a **fine-grained reactive system** (signals/memos/effects) inspired by SolidJS:
+All subsystems are initialized via `SlideVibing.init()` in a specific order. See `slides-runtime.js:1841-1922` for the initialization flow.
+
+| Subsystem | Init function | Purpose |
+|-----------|--------------|---------|
+| Navigation | `initNav` | `data-sv-nav` buttons (next/prev/first/last) and `data-sv-scroll-to` links |
+| Numbering | `initNumbering` | Populates `[data-sv-slide-index]` / `[data-sv-slide-total]`, excludes covers |
+| PDF Export | `initPdf` | Gated download unlocked on last slide, uses `?print-pdf` mode |
+| Comments | `initComments` | Text-selection-anchored comments with local or Power Automate storage |
+| Canvas | `initCanvasControllers` | Per-slide animated canvases with play/pause on click |
+
+### Comment System
+
+The comment subsystem (~1200 lines) is the most complex part. It handles:
+- Text selection anchoring with percentage-based coordinates
+- Draggable markers, inline bubbles, and a side panel
+- Two storage backends: localStorage (`type: 'local'`) and Power Automate HTTP API
+- Optimistic updates, conflict detection via hashing, and offline resilience
+
+Storage key format: `sv:comments:{deckId}` for local mode.
+
+### Public API
 
 ```javascript
-const [value, setValue] = createSignal(initialValue);
-const derived = createMemo(() => computeFrom(value()));
-createEffect(() => reactTo(value()));
+window.SlideVibing = {
+  version: '1.0.5',
+  init(config),               // Main entry point — returns { getActiveSurfaceId(), scrollToId() }
+  generateCuid(),             // 9-char alphanumeric ID
+  generateSlideId(),          // Returns "slide-{cuid}"
+  state: { createSignal, createMemo, createEffect, batch, untrack }
+}
 ```
 
-Key subsystems initialized via `SlideVibing.init()`:
+## Coding Conventions
 
-1. **Navigation** (`initNav`) - Handles `data-sv-nav` buttons (next/prev/first/last) and `data-sv-scroll-to` links
-2. **Numbering** (`initNumbering`) - Populates `[data-sv-slide-index]` and `[data-sv-slide-total]` spans, excluding cover slides
-3. **PDF Export** (`initPdf`) - Gated download button unlocked on reaching final slide, uses `?print-pdf` mode
-4. **Comments** (`initComments`) - Text selection creates anchored comments, supports local storage or Power Automate backend
-5. **Canvas Controllers** (`initCanvasControllers`) - Per-slide animated canvases with play/pause on click
+**These rules are strict — follow them in all changes:**
 
-### Slide Structure
+- All CSS classes use the `sv-` prefix (e.g., `sv-btn`, `sv-panel`, `sv-marker`)
+- Element IDs follow `sv{ComponentName}` pattern (e.g., `svCommentPanel`, `svNameModal`)
+- CSS custom properties use `--sv-` prefix (e.g., `--sv-indigo`, `--sv-border`)
+- The runtime is a single IIFE — do not split it into modules or add imports
+- Use `data-slide-id` for stable slide identifiers (generate with `SlideVibing.generateSlideId()`)
+- Use `data-slide-kind="cover"` to exclude slides from numbering
+- Navigation uses `data-sv-nav` and `data-sv-scroll-to` attributes, not click handlers
 
-Slides are `<section>` elements containing a `.sv-slide-surface` with:
-- `data-slide-id` - Stable CUID (use `SlideVibing.generateSlideId()`)
-- `data-slide-title` - Human-readable title
-- `data-slide-kind="cover"` - Excludes slide from numbering
+## Slide HTML Structure
 
-### Comment Storage
+```html
+<section data-slide-kind="cover">
+  <div class="sv-slide-surface"
+       data-slide-id="slide-{cuid}"
+       data-slide-title="Title">
+    <!-- slide content -->
+  </div>
+</section>
+```
 
-Comments can use:
-- **Local mode** (`storage: { type: 'local' }`) - localStorage with `sv:comments:{deckId}` key
-- **Power Automate mode** - Requires `readUrl`, `writeUrl`, `updateUrl`, `deleteUrl`, and `apiKey`
+The outer `<section>` is a Reveal.js slide. The inner `.sv-slide-surface` is what Slide-Vibing operates on.
 
-The system includes optimistic updates, conflict detection, and pending change tracking for offline resilience.
+## Reveal.js Configuration
 
-### Key Patterns
+Reveal.js must be configured with `view: 'scroll'`, `scrollSnap: 'mandatory'`, and `disableLayout: true`. See `index.html:448-492` for the full configuration. Do not change these settings without understanding the scroll-based navigation model.
 
-- All UI elements use `sv-` CSS class prefix
-- Element IDs follow `sv{ComponentName}` pattern (e.g., `svCommentPanel`)
-- Comment markers are draggable and store position as percentage coordinates
-- Reveal.js configured with `view: 'scroll'`, `scrollSnap: 'mandatory'`, `disableLayout: true`
+## CDN Dependencies
+
+| Dependency | Version | Purpose |
+|-----------|---------|---------|
+| Reveal.js | 5.2.1 | Scroll-view presentation engine |
+| Tailwind CSS | CDN (v3) | Utility-first slide styling |
+| Google Fonts (Inter) | latest | Typography |
+
+The runtime itself (`slides-runtime.js` + `slides-runtime.css`) is also distributed via jsDelivr from this repo's tags.
+
+## Common Gotchas
+
+- **Marker positioning is percentage-based.** Comment markers store `markerX`/`markerY` as viewport percentages, not pixels. Always use `getSurfaceRect()` to convert.
+- **Print mode hides all UI.** The `@media print` rule in the CSS hides overlays, panels, and markers. Don't rely on them being visible during PDF export.
+- **Scroll behavior varies.** `scrollIntoView({ behavior: 'smooth', block: 'center' })` is used for navigation but Reveal.js may override scroll behavior. Test on multiple browsers.
+- **The IIFE pattern means no exports.** Everything attaches to `window.SlideVibing`. Don't try to import from the runtime.
+- **Cover slides are special.** `data-slide-kind="cover"` sections are excluded from numbering and from "first slide" navigation. The PDF unlock triggers on the last *numbered* slide.
 
 ## Claude Code Skills & Agents
 
-This project includes specialized Skills and Sub-Agents for slide development.
+This project uses specialized Claude Code skills and sub-agents:
 
-### Skills (`.claude/skills/`)
+| Name | Type | Purpose |
+|------|------|---------|
+| `slide-developer` | Skill + Agent (Sonnet) | Slide HTML/CSS creation, canvas animations, runtime API |
+| `business-consultant` | Skill + Agent (Opus) | Strategic frameworks, executive communication, narrative structure |
 
-| Skill | Purpose |
-|-------|---------|
-| `business-consultant` | Strategic frameworks (MECE, pyramid principle), executive communication, recommendation structure |
-| `slide-developer` | Technical slide creation, canvas animations, runtime API reference |
+Agents are invoked automatically based on task context or explicitly via "use the {agent-name} agent".
 
-### Sub-Agents (`.claude/agents/`)
+## MCP Documentation Server
 
-| Agent | Model | Purpose |
-|-------|-------|---------|
-| `business-consultant` | Opus | Strategic narrative review, framework application, executive-level content guidance |
-| `slide-developer` | Sonnet | Slide HTML/CSS creation, animation development, runtime configuration |
-
-Agents are invoked automatically based on task context or explicitly via "use the {agent-name} agent"
-
-## MCP Server
-
-The project includes an MCP server configuration (`.mcp.json`) that serves library documentation via the Filesystem MCP server. External users can access docs through any MCP-compatible client.
-
-### Documentation (`docs/`)
-
-**Technical Documentation** (`docs/technical/`)
-| File | Content |
-|------|---------|
-| `slides.md` | Slide structure and attributes |
-| `navigation.md` | Navigation buttons and links |
-| `comments.md` | Comment system configuration |
-| `pdf.md` | PDF export and gating |
-| `canvas.md` | Canvas animation controllers |
-| `api.md` | Full API reference |
-
-**Business Consulting Guide** (`docs/consulting/`)
-| File | Content |
-|------|---------|
-| `narrative.md` | Story arcs, SCR framework, slide flow |
-| `frameworks.md` | MECE, pyramid principle, issue trees, Porter's Five Forces |
-| `headlines.md` | Action-oriented titles, headline formulas |
-| `data-viz.md` | Chart selection, data-ink ratio, annotations |
-| `recommendations.md` | Building cases, quantifying impact |
-| `executive.md` | C-suite communication, pre-wiring, executive briefs |
-
-### Using the MCP Server
-
-```bash
-# Install and run the docs server
-npx -y @modelcontextprotocol/server-filesystem ./docs
-```
-
-Or configure in your MCP client using the `.mcp.json` file
+The `.mcp.json` configures a Filesystem MCP server that serves `./docs/` for reference documentation. Use the `mcp__slide-vibing-docs__*` tools to read docs when available.

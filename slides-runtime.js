@@ -131,9 +131,10 @@
   function createLocalCommentsStore(storageKey) {
     return {
       // Synchronous for immediate response
-      list() {
+      list(slideIds) {
         try {
-          return JSON.parse(localStorage.getItem(storageKey) || '[]');
+          const all = JSON.parse(localStorage.getItem(storageKey) || '[]');
+          return all.filter(c => slideIds.includes(c.slideId));
         } catch {
           return [];
         }
@@ -224,8 +225,8 @@
     }
 
     return {
-      async list() {
-        const response = await apiRequest(readUrl);
+      async list(slideIds) {
+        const response = await apiRequest(readUrl, { slideIds });
         if (!response.ok) throw new Error(`Failed to load: ${response.status}`);
         const data = await response.json();
         const items = data?.value || data || [];
@@ -751,6 +752,7 @@
     let lastSyncHash = '';  // Track if server data actually changed
     let isInitialSync = true;  // First sync shows indicator, subsequent ones are silent
 
+    const slideIds = surfaces.map(s => s.id);
     const bySurfaceId = new Map(surfaces.map((s) => [s.id, s]));
     const numberedIndexById = new Map(numberedSurfaces.map((s, idx) => [s.id, idx + 1]));
 
@@ -945,7 +947,7 @@
       }
 
       try {
-        const serverComments = await remote.list();
+        const serverComments = await remote.list(slideIds);
 
         // Compute hash to check if server data actually changed
         const newHash = computeCommentsHash(serverComments);
@@ -1700,7 +1702,7 @@
 
     function load() {
       // Load cached comments immediately (synchronous for instant UI)
-      const cached = cacheStore.list();
+      const cached = cacheStore.list(slideIds);
       setComments(cached);
       setHydrated(true);
 
@@ -1912,7 +1914,7 @@
   }
 
   window.SlideVibing = {
-    version: '1.0.0',
+    version: '1.0.5',
     init: initCore,
     generateCuid,
     generateSlideId,
