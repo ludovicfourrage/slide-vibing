@@ -81,7 +81,12 @@ comments: {
     closePanelId: 'svClosePanel',      // Close button
     nameModalId: 'svNameModal',        // Name prompt modal
     nameInputId: 'svNameInput',        // Name input field
-    nameSubmitId: 'svNameSubmit'       // Name submit button
+    nameSubmitId: 'svNameSubmit',       // Name submit button
+    confirmModalId: 'svConfirmModal',   // Delete confirmation modal
+    confirmTitleId: 'svConfirmTitle',   // Confirmation title
+    confirmMessageId: 'svConfirmMessage', // Confirmation message
+    confirmDeleteId: 'svConfirmDelete', // Confirm delete button
+    confirmCancelId: 'svConfirmCancel'  // Cancel delete button
   }
 }
 ```
@@ -95,7 +100,7 @@ comments: {
 3. Enter your name (first time only, saved to localStorage)
 4. Write your comment and click "Add Comment"
 
-The selected text is expanded to the full sentence and quoted in the comment.
+The selected text is copied to the clipboard and expanded to the full sentence, which is quoted in the comment.
 
 ### Comment Markers
 
@@ -110,7 +115,11 @@ Markers can be dragged to reposition. Click to view thread.
 - **Reply**: Add response to existing comment
 - **Edit**: Modify your comment text
 - **Resolve**: Mark thread as resolved (turns green)
-- **Delete**: Remove comment and all replies
+- **Delete**: Remove comment and all replies (shows confirmation dialog)
+
+### Panel Behavior
+
+The comment panel automatically closes when the user scrolls to a different slide.
 
 ## Auto-Injected UI
 
@@ -133,8 +142,8 @@ If comment UI elements aren't in your HTML, the runtime auto-injects them:
 | State | Appearance | Meaning |
 |-------|------------|---------|
 | Hidden | No badge | No comments |
-| `3/5` | Amber | 3 unresolved of 5 total |
-| `✓ 5` | Green | All 5 resolved |
+| `5` | Amber | Total comment count (has unresolved) |
+| `✓` | Green | All comments resolved |
 
 ## Sync Status Indicators
 

@@ -20,7 +20,7 @@ A no-build slide presentation runtime built on Reveal.js with scroll-based navig
   <script src="https://cdn.tailwindcss.com"></script>
 
   <!-- Slide-Vibing Runtime -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/ludovicfourrage/slide-vibing@1.0.2/slides-runtime.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/ludovicfourrage/slide-vibing@1.0.5/slides-runtime.css">
 </head>
 <body>
   <div class="reveal">
@@ -30,7 +30,7 @@ A no-build slide presentation runtime built on Reveal.js with scroll-based navig
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.2.1/dist/reveal.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/ludovicfourrage/slide-vibing@1.0.2/slides-runtime.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/ludovicfourrage/slide-vibing@1.0.5/slides-runtime.js"></script>
   <script>
     Reveal.initialize({
       view: 'scroll',
@@ -51,9 +51,7 @@ A no-build slide presentation runtime built on Reveal.js with scroll-based navig
       minScale: 1,
       maxScale: 1,
       disableLayout: true
-    });
-
-    window.SlideVibing.init({
+    }).then(() => window.SlideVibing.init({
       deckId: 'my-deck',
       selectors: {
         slideSurface: '.sv-slide-surface'
@@ -66,7 +64,7 @@ A no-build slide presentation runtime built on Reveal.js with scroll-based navig
         enabled: true,
         storage: { type: 'local' }
       }
-    });
+    }));
   </script>
 </body>
 </html>

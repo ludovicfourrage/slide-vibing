@@ -179,14 +179,15 @@ canvas: {
 ## Canvas Styling
 
 ```css
+/* Base CSS (from slides-runtime.css) */
 .sv-canvas {
   width: 100%;
   border-radius: 12px;
   margin-top: 16px;
   border: 1px solid #e2e8f0;
   background: #0f172a;
-  cursor: pointer;
 }
+/* cursor: pointer is set by the runtime via JavaScript */
 ```
 
 ## Print Mode

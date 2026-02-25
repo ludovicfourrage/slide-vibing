@@ -30,7 +30,7 @@ selectors: {
 ```javascript
 pdf: {
   buttonId: 'svDownloadPdfBtn',      // Download button element ID
-  unlockKey: 'svDeckCompleted',       // localStorage key for unlock state
+  unlockKey: 'svDeckCompleted:{deckId}', // localStorage key (auto-namespaced with deckId)
   unlockOnLastSlide: true              // Auto-unlock on final slide
 }
 ```
@@ -82,6 +82,16 @@ canvas: {
   getActiveSurfaceId(): string,  // Current slide ID
   scrollToId(id: string): void   // Navigate to slide by ID
 }
+```
+
+---
+
+## SlideVibing.version
+
+The current runtime version string.
+
+```javascript
+console.log(SlideVibing.version);  // "1.0.5"
 ```
 
 ---
@@ -246,7 +256,22 @@ createEffect(() => {
 | `sv-marker-resolved` | Resolved comment marker |
 | `sv-marker-has-replies` | Marker with replies |
 | `sv-panel` | Comment panel container |
-| `sv-panel-active` | Visible comment panel |
+| `sv-active` | Visible comment panel |
+| `sv-marker-dragging` | Marker being dragged |
+| `sv-panel-resolved` | Resolved comment in panel |
+| `sv-inline-focused` | Focused inline comment bubble |
+| `sv-inline-resolved` | Resolved inline comment bubble |
+
+### Status
+
+| Class | Description |
+|-------|-------------|
+| `sv-has-comments` | Applied to slide surface when it has comments |
+| `sv-all-resolved` | All comments on slide are resolved |
+| `sv-syncing` | Sync in progress |
+| `sv-error` | Sync error state |
+| `sv-offline` | Offline/local-only mode |
+| `sv-sync-dot` | Sync status indicator dot |
 
 ### Other
 
@@ -255,6 +280,7 @@ createEffect(() => {
 | `sv-canvas` | Styled canvas element |
 | `sv-badge` | Count badge |
 | `sv-badge-resolved` | Green resolved badge |
+| `sv-btn-comments` | Comment toggle button |
 | `sv-input` | Text input/textarea |
 | `sv-modal` | Modal dialog |
 

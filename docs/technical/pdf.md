@@ -11,7 +11,7 @@ SlideVibing.init({
   deckId: 'my-deck',
   pdf: {
     buttonId: 'svDownloadPdfBtn',    // ID of download button
-    unlockKey: 'svDeckCompleted',     // localStorage key for unlock state
+    unlockKey: 'svDeckCompleted:{deckId}', // localStorage key (auto-namespaced with deckId)
     unlockOnLastSlide: true            // Unlock when reaching last slide
   }
 });
@@ -36,7 +36,7 @@ The `sv-hidden` class is removed when the user reaches the final slide.
 
 1. Button starts hidden (`sv-hidden` class)
 2. User scrolls through presentation
-3. When last slide is reached:
+3. When last slide is reached (detected via `Reveal.getProgress() >= 0.99` or last surface ID):
    - `localStorage.setItem(unlockKey, 'true')` is called
    - `sv-hidden` class is removed from button
 4. Clicking button opens `?print-pdf` view
@@ -47,14 +47,14 @@ The `sv-hidden` class is removed when the user reaches the final slide.
 The unlock state persists in localStorage:
 
 ```javascript
-// Check if unlocked
-localStorage.getItem('svDeckCompleted') === 'true'
+// Check if unlocked (key is auto-namespaced: svDeckCompleted:{deckId})
+localStorage.getItem('svDeckCompleted:my-deck') === 'true'
 
 // Manually unlock (for testing)
-localStorage.setItem('svDeckCompleted', 'true')
+localStorage.setItem('svDeckCompleted:my-deck', 'true')
 
 // Reset lock
-localStorage.removeItem('svDeckCompleted')
+localStorage.removeItem('svDeckCompleted:my-deck')
 ```
 
 ## Custom Unlock Key

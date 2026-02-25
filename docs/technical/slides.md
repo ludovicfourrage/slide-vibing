@@ -117,14 +117,14 @@ Tailwind CSS is loaded via CDN. Common utilities:
 <div class="reveal">
   <div class="slides">
     <!-- Cover (not numbered) -->
-    <section data-slide-kind="cover">
+    <section data-slide-kind="cover" style="min-height:100vh;">
       <div class="sv-slide-surface" data-slide-id="slide-cover" data-slide-title="Cover">
         <h1>My Presentation</h1>
       </div>
     </section>
 
     <!-- Slide 1 -->
-    <section>
+    <section style="min-height:100vh;">
       <div class="sv-slide-surface" data-slide-id="slide-intro" data-slide-title="Introduction">
         <h2>Introduction</h2>
         <p>First numbered slide...</p>
@@ -132,7 +132,7 @@ Tailwind CSS is loaded via CDN. Common utilities:
     </section>
 
     <!-- Slide 2 -->
-    <section>
+    <section style="min-height:100vh;">
       <div class="sv-slide-surface" data-slide-id="slide-main" data-slide-title="Main Content">
         <h2>Main Content</h2>
         <p>Second numbered slide...</p>
