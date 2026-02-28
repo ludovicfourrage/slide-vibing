@@ -7,6 +7,10 @@
   --sv-border: #e2e8f0;
   --sv-panel: #ffffff;
   --sv-panel-header: #0f172a;
+  --r-heading1-size: 1.8em;
+  --r-heading2-size: 1.2em;
+  --r-heading3-size: 1em;
+  --r-heading4-size: 0.8em;
 }
 
 /* Reveal.js layout overrides for Slide-Vibing */
