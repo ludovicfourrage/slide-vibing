@@ -1914,7 +1914,7 @@
   }
 
   window.SlideVibing = {
-    version: '1.0.6',
+    version: '1.0.7',
     init: initCore,
     generateCuid,
     generateSlideId,

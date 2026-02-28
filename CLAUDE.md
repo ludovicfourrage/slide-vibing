@@ -53,7 +53,7 @@ Storage key format: `sv:comments:{deckId}` for local mode.
 
 ```javascript
 window.SlideVibing = {
-  version: '1.0.6',
+  version: '1.0.7',
   init(config),               // Main entry point — returns { getActiveSurfaceId(), scrollToId() }
   generateCuid(),             // 9-char alphanumeric ID
   generateSlideId(),          // Returns "slide-{cuid}"
