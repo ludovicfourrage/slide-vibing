@@ -90,7 +90,7 @@ canvas: {
 The current runtime version string.
 
 ```javascript
-console.log(SlideVibing.version);  // "1.0.5"
+console.log(SlideVibing.version);  // "1.0.6"
 ```
 
 ---

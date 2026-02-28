@@ -21,7 +21,6 @@
 .reveal .slides section h2,
 .reveal .slides section h3 {
   text-transform: none;
-  font-size: inherit;
 }
 
 /* Slide content centering */
